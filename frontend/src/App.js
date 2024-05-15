@@ -3,12 +3,11 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Loader from "./Components/Loader";
 import frFR from "antd/lib/locale/fr_FR";
-import { loadFonts, loadImages } from "./Services";
+import { loadFonts } from "./Services";
 import { FontsConfig } from "./fontsConfig";
 
 import style from "./App.module.css";
 import NavigationBar from "./Components/NavigationBar";
-import { General_Assets } from "./config.dev";
 
 function App() {
   const [appIsReady, setAppIsReady] = useState(false);
