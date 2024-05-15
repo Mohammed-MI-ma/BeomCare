@@ -1,24 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import { ConfigProvider, FloatButton, message } from "antd";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import Loader from "./Components/Loader";
+import frFR from "antd/lib/locale/fr_FR";
+import { loadFonts, loadImages } from "./Services";
+import { FontsConfig } from "./fontsConfig";
+
+import style from "./App.module.css";
+import NavigationBar from "./Components/NavigationBar";
+import { General_Assets } from "./config.dev";
 
 function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        await Promise.all([loadFonts(FontsConfig)]);
+        switch (location.pathname) {
+          case "/":
+            // await Promise.all([loadImages(General_Assets)]);
+            break;
+          default:
+            break;
+        }
+        setAppIsReady(true);
+      } catch (error) {
+        message.error("Error while preparing:", error);
+      }
+    }
+    fetchData();
+  }, [location.pathname]);
+
+  if (!appIsReady) {
+    return <Loader />;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ConfigProvider locale={frFR}>
+      <div className={style.wrapper}>
+        <header className={style.bgHeader}>
+          <NavigationBar />
+        </header>
+      </div>
+      <FloatButton.BackTop visibilityHeight={0} />
+    </ConfigProvider>
   );
 }
 
