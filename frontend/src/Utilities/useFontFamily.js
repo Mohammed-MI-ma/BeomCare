@@ -1,30 +1,35 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-const useFontFamily = (language, fontWeight = "regular") => {
+const fontFamilies = {
+  fr: {
+    Light: "Primary-Light",
+    Regular: "Primary-Regular",
+    SemiBold: "Primary-SemiBold",
+    Medium: "Primary-Medium",
+  },
+
+  ar: {
+    Light: "Primary-Light_ar",
+    Regular: "Primary-Regular_ar",
+    SemiBold: "Primary-SemiBold_ar",
+    Medium: "Primary-Medium_ar",
+  },
+  // Add more languages and font weights as needed
+};
+
+const useFontFamily = (fontWeight = "regular") => {
   const [fontFamily, setFontFamily] = useState("");
+  const language = useSelector((state) => state.application.language);
 
   useEffect(() => {
-    let selectedFontFamily = "";
-
-    // Determine font family based on the language and font weight
-    switch (language + "-" + fontWeight) {
-      case "ar-normal":
-        selectedFontFamily = "Primary-Regular-ar";
-        break;
-      case "ar-bold":
-        selectedFontFamily = "Primary-Bold-ar";
-        break;
-      case "fr-normal":
-        selectedFontFamily = "Primary-Regular-fr";
-        break;
-      case "fr-bold":
-        selectedFontFamily = "Primary-Bold-fr";
-        break;
-      // Add more cases for other languages and font weights as needed
-      default:
-        selectedFontFamily = "Primary-Bold-fr";
+    if (!language || !fontFamilies[language]) {
+      console.error("Invalid language:", language);
+      return;
     }
 
+    const selectedFontFamily =
+      fontFamilies[language][fontWeight] || fontFamilies[language]["Regular"];
     setFontFamily(selectedFontFamily);
   }, [fontWeight, language]);
 

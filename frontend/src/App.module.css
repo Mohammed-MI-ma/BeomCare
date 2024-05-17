@@ -1,5 +1,7 @@
 .bgHeader {
-  min-height: 6.25rem;
+  min-height: 90px;
+  display: grid;
+  align-items: center;
 }
 .wrapper {
   max-width: 1120px;

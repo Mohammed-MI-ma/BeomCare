@@ -1,4 +1,6 @@
 {
   "///////////_": "***_FirstPage",
-  "test": "un test"
+  "invalidEmail": "Ooops, ce n'est pas une adresse e-mail valide !",
+  "beomSlogan": "Accordez-vous la tranquillité d'une plateforme de réservation complète pour le secteur de la beauté et du bien-être.",
+  "passwordInputPrompt": "Veuillez saisir votre mot de passe !"
 }

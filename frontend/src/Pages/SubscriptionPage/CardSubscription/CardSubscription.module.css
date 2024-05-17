@@ -1,0 +1,21 @@
+.cardSubscription {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%;
+  text-align: start;
+  min-height: 180px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.cardTitle {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.cardFeatures {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 16px;
+}

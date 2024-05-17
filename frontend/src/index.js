@@ -8,8 +8,9 @@ import { Provider } from "react-redux";
 import App from "./App";
 import Store from "./store";
 import "animate.css";
-import "./index.css";
 
+import "react-phone-number-input/style.css";
+import "./index.css";
 // Initialize i18n with proper error handling
 try {
   i18n.use(Backend).init({
