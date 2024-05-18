@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Loader from "./Components/Loader";
 import frFR from "antd/lib/locale/fr_FR";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+
 import { loadFonts } from "./Services";
 import { FontsConfig } from "./fontsConfig";
 import { routes } from "./routes";
@@ -73,6 +75,12 @@ function App() {
         </AnimatePresence>
 
         <FloatButton.BackTop visibilityHeight={0} />
+        <FloatButton
+          icon={<QuestionCircleOutlined />}
+          style={{
+            right: 94,
+          }}
+        />
         <Footer />
         <CookieConsent />
       </div>

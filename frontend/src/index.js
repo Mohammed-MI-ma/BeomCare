@@ -11,6 +11,8 @@ import "animate.css";
 
 import "react-phone-number-input/style.css";
 import "./index.css";
+import "leaflet/dist/leaflet.css";
+
 // Initialize i18n with proper error handling
 try {
   i18n.use(Backend).init({

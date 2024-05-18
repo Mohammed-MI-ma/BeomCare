@@ -82,7 +82,7 @@ const LoginPage = () => {
                 >
                   {t("Email *")}
                 </p>
-                <Input size="large" allowClear />
+                <Input allowClear />
               </Form.Item>
 
               {/**Password*/}
@@ -106,7 +106,7 @@ const LoginPage = () => {
                 >
                   {t("Mot de passe*")}
                 </p>
-                <Input.Password size="large" allowClear />
+                <Input.Password allowClear />
               </Form.Item>
 
               {/**ForgottenPassword */}

@@ -114,8 +114,8 @@ const Footer = () => {
       if (!language || !t) return [];
       return [
         {
-          id: "COIFFEUR",
-          component: <Link to="/web/guest/eat">{t("COIFFEUR")}</Link>,
+          id: "coiffure",
+          component: <Link to="/web/guest/eat">{t("coiffure")}</Link>,
         },
         {
           id: "INSTITUT DE BEAUTÉ",
@@ -147,16 +147,16 @@ const Footer = () => {
       if (!language || !t) return [];
       return [
         {
-          id: "Coiffeur RABAT",
-          component: <Link to="/web/guest/eat">{t("Coiffeur RABAT")}</Link>,
+          id: "coiffure RABAT",
+          component: <Link to="/web/guest/eat">{t("coiffure RABAT")}</Link>,
         },
         {
-          id: "Coiffeur SALÉ",
-          component: <Link to="/web/guest/market"> {t("Coiffeur SALÉ")}</Link>,
+          id: "coiffure SALÉ",
+          component: <Link to="/web/guest/market"> {t("coiffure SALÉ")}</Link>,
         },
         {
-          id: "Coiffeur TEMARA",
-          component: <> {t("Coiffeur TEMARA")}</>,
+          id: "coiffure TEMARA",
+          component: <> {t("coiffure TEMARA")}</>,
         },
       ];
     } catch (error) {

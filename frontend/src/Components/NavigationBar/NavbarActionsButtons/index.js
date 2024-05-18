@@ -128,8 +128,8 @@ const SignUpButton = {
   path: `/beom/account/sign-up`,
 };
 const menuItems = [
-  { label: "Coiffeur homme", path: "/beom/BarberMen" },
-  { label: "Coiffeur femme", path: "/beom/BarberWomen" },
+  { label: "coiffure homme", path: "/beom/BarberMen" },
+  { label: "coiffure femme", path: "/beom/BarberWomen" },
   { label: "Hamam", path: "/beom/Hamam" },
   { label: "Institut de beauté", path: "/beom/BeautyInstitute" },
 ];
