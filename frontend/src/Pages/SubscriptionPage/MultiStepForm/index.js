@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import StepTwo from "../StepTwo";
 import StepOne from "../StepOne";
 import StepThree from "../StepThree";
+import { motion } from "framer-motion";
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(1);
@@ -46,12 +47,18 @@ const MultiStepForm = () => {
       );
     case 2:
       return (
-        <StepTwo
-          prevStep={prevStep}
-          nextStep={nextStep}
-          handleChange={handleChange}
-          values={formData}
-        />
+        <motion.div
+          initial={{ opacity: 0, translateY: 20 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          <StepTwo
+            prevStep={prevStep}
+            nextStep={nextStep}
+            handleChange={handleChange}
+            values={formData}
+          />
+        </motion.div>
       );
     case 3:
       return (

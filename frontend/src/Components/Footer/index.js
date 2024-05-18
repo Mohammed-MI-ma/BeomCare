@@ -35,14 +35,6 @@ const Footer = () => {
       key: "1",
       label: <p style={{ fontFamily: fontFamilyLight }}>{t("french")}</p>,
     },
-    {
-      key: "2",
-      label: <p style={{ fontFamily: fontFamilyLight }}>{t("english")}</p>,
-    },
-    {
-      key: "3",
-      label: <p style={{ fontFamily: fontFamilyLight }}>{t("arabic")}</p>,
-    },
   ];
 
   //Internationalization
@@ -100,6 +92,12 @@ const Footer = () => {
             <Link to="/beom/aboutUs/privacy-policy">
               {t("Politique de confidentialité")}
             </Link>
+          ),
+        },
+        {
+          id: "Rejoignez-nous",
+          component: (
+            <Link to="/beom/aboutUs/privacy-policy">{t("Support Beom")}</Link>
           ),
         },
       ];
@@ -245,7 +243,7 @@ const Footer = () => {
                     borderRadius: "10px",
                   }}
                 >
-                  {language === AR ? t("arabic") : t("french")}
+                  {t("french")}
                   <DownOutlined />
                 </Space>
               </Dropdown>

@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import { Button, Divider, Form, Input, Spin } from "antd";
 import React, { useState } from "react";
 import useFontFamily from "../../Utilities/useFontFamily";
@@ -252,10 +253,12 @@ export const CustomDivider = ({
   height = "2px",
   width = "65px",
   minWidth = "inherit",
+  style,
 }) => {
   return (
     <Divider
       style={{
+        ...style,
         background: color,
         height: height,
         width: width,

@@ -21,6 +21,7 @@ const StepThree = ({ prevStep, handleSubmit, handleChange, values }) => {
 
   return (
     <section style={{ width: "100%" }}>
+      <p className="w-full text-center">3/3</p>
       <div
         className="flex items-center"
         style={{ width: "379px", margin: "0 auto" }}
@@ -48,7 +49,6 @@ const StepThree = ({ prevStep, handleSubmit, handleChange, values }) => {
           </h2>
         </div>
       </div>
-
       <Form onFinish={onFinish}>
         <div
           className="fles gap-2 flex-col"

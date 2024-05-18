@@ -8,6 +8,7 @@ import CustomSuspense from "./Components/CustomSuspense";
 const LoginPage = lazy(() => import("./Pages/LoginPage"));
 const SignUpPage = lazy(() => import("./Pages/SignUpPage"));
 const SubscriptionPage = lazy(() => import("./Pages/SubscriptionPage"));
+const LandingPage = lazy(() => import("./Pages/LandingPage"));
 
 //__404_page
 const NotFoundPage = lazy(() => import("./Pages/NotFoundPage"));
@@ -15,7 +16,11 @@ const NotFoundPage = lazy(() => import("./Pages/NotFoundPage"));
 export const routes = [
   {
     path: "/",
-    element: <CustomSuspense id="landingPage"></CustomSuspense>,
+    element: (
+      <CustomSuspense id="landingPage">
+        <LandingPage />
+      </CustomSuspense>
+    ),
   },
   // TODO: //AUTHENTICATION ROUTES
 

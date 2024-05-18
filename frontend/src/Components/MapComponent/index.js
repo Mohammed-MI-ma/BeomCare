@@ -24,18 +24,13 @@ const MapComponent = ({ selectedLocation, setSelectedLocation }) => {
   });
   return (
     <motion.div
-      initial={{ x: "50vw" }}
-      animate={{ x: 0 }}
-      transition={{
-        type: "spring",
-        stiffness: 120,
-        damping: 20,
-        duration: 0.6,
-      }}
+      initial={{ opacity: 0, translateY: 20 }}
+      animate={{ opacity: 1, translateY: 0 }}
+      transition={{ duration: 0.5, delay: 0.5 }}
     >
       <MapContainer
         center={[selectedLocation.lat, selectedLocation.lng]}
-        zoom={18}
+        zoom={16}
         style={{
           height: "300px",
           width: "100%",

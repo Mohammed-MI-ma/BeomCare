@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import React, { useEffect, useState } from "react";
 import useFontFamily from "../../../Utilities/useFontFamily";
 import { useTranslation } from "react-i18next";
@@ -27,7 +28,8 @@ const StepTwo = ({ prevStep, nextStep, handleChange, values }) => {
   };
 
   return (
-    <section style={{ width: "379px" }}>
+    <section>
+      <p className="w-full text-center">2/3 {values?.category?.label}</p>
       <Form validateMessages={validateMessages} onFinish={onFinish}>
         <div
           className="flex items-center gap-2"
@@ -47,12 +49,9 @@ const StepTwo = ({ prevStep, nextStep, handleChange, values }) => {
               textAlign: "start",
             }}
           >
-            {t("Vous avez choisi")}&nbsp;'
-            {values?.category?.label}'&nbsp;
-            {t(". Vous êtes gérant d’un établissement beauté ?")}
+            {t("Vous êtes gérant d’un établissement beauté ?")}
           </h2>
         </div>
-
         <div
           style={{
             textAlign: "left",
@@ -135,7 +134,7 @@ const StepTwo = ({ prevStep, nextStep, handleChange, values }) => {
             />
           </Form.Item>
           <Button
-            className="w-full"
+            className="w-full mb-2"
             size="large"
             htmlType="submit"
             style={{
@@ -146,6 +145,19 @@ const StepTwo = ({ prevStep, nextStep, handleChange, values }) => {
           >
             {t("Suivant")}
           </Button>
+          <small
+            style={{
+              fontFamily: fontFamilyLight,
+              fontSize: "var(--font-tiny-size)",
+              textAlign: "center",
+              maxWidth: "300px",
+              margin: "0 auto",
+            }}
+          >
+            Après validation par notre membre du support, nous vous invitons à
+            compléter les informations de votre institut/centre de beauté et à
+            commencer à publier tous vos services sur Beom Care.
+          </small>
         </div>
       </Form>
     </section>

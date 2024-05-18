@@ -6,7 +6,7 @@ import { Button, ConfigProvider, Space } from "antd";
 import { Link } from "react-router-dom";
 import useFontFamily from "../../../Utilities/useFontFamily";
 
-const ActionButton = ({ children, style, to }) => {
+export const ActionButton = ({ children, style, to }) => {
   const fontFamilyMedium = useFontFamily("Medium");
 
   return (
@@ -24,9 +24,9 @@ const ActionButton = ({ children, style, to }) => {
         <Button
           className="text-white border-none"
           style={{
+            fontFamily: fontFamilyMedium,
             ...style,
             fontSize: "var(--font-small-size)",
-            fontFamily: fontFamilyMedium,
           }}
         >
           <div>{children}</div>
@@ -114,7 +114,7 @@ const NavbarActionsButtons = () => {
 export default NavbarActionsButtons;
 
 //Static code
-const AddInstituteButton = {
+export const AddInstituteButton = {
   label: "Ajouter votre établissement",
   path: `/beom/institute/addCenter`,
 };
