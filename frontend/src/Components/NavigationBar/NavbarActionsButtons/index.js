@@ -1,11 +1,18 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { IoSettingsSharp } from "react-icons/io5";
+import { RiLogoutCircleRLine } from "react-icons/ri";
+import { IoStorefrontOutline } from "react-icons/io5";
+import { IoMdNotifications, IoIosLogIn } from "react-icons/io";
 
-import { Button, ConfigProvider, Space } from "antd";
+import { Avatar, Badge, Button, ConfigProvider, Popover, Space } from "antd";
 import { Link } from "react-router-dom";
 import useFontFamily from "../../../Utilities/useFontFamily";
-
+import style from "./NavbarActionsButtons.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import CenteredFlexComponent from "../../Utilities/CenteredFlexComponent";
+import { logout } from "../../../Reducers/authService/authSlice";
 export const ActionButton = ({ children, style, to }) => {
   const fontFamilyMedium = useFontFamily("Medium");
 
@@ -27,9 +34,10 @@ export const ActionButton = ({ children, style, to }) => {
             fontFamily: fontFamilyMedium,
             ...style,
             fontSize: "var(--font-small-size)",
+            height: "unset",
           }}
         >
-          <div>{children}</div>
+          {children}
         </Button>
       </ConfigProvider>
     </Link>
@@ -38,9 +46,47 @@ export const ActionButton = ({ children, style, to }) => {
 
 const NavbarActionsButtons = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const location = useLocation();
-  const fontFamilyMedium = useFontFamily("Medium");
+  const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  //Static code
+  const AddInstituteButton = {
+    label: "Ajouter votre établissement",
+    path: `/beom/institute/addCenter`,
+    icon: <IoStorefrontOutline size={"20px"} />,
+  };
 
+  const LoginButton = {
+    label: "Se connecter",
+    path: `/beom/account/log-in`,
+    icon: <IoIosLogIn size={"20px"} />,
+  };
+
+  const SignUpButton = {
+    label: "S'inscrire",
+    path: `/beom/account/sign-up`,
+    icon: <IoIosLogIn size={"20px"} />,
+  };
+  const menuItems = [
+    { label: "coiffure homme", path: "/beom/BarberMen" },
+    { label: "coiffure femme", path: "/beom/BarberWomen" },
+    { label: "Hamam", path: "/beom/Hamam" },
+    { label: "Institut de beauté", path: "/beom/BeautyInstitute" },
+  ];
+
+  const fontFamilyMedium = useFontFamily("Medium");
+  const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
+
+  //__ACTIONS
+  const logoutAction = async () => {
+    try {
+      await dispatch(logout());
+      navigate("/");
+    } catch (error) {
+      // Handle any errors if necessary
+    }
+  };
   return (
     <Space>
       {true && (
@@ -59,11 +105,9 @@ const NavbarActionsButtons = () => {
         >
           <ul
             style={{
-              display: "flex",
               gap: "var(--gap-large)",
-              textTransform: "uppercase",
-              marginRight: "50px",
             }}
+            className={style.nav}
           >
             {menuItems.map((item, index) => (
               <li key={index} style={{ fontSize: "var(--font-small-size)" }}>
@@ -75,61 +119,151 @@ const NavbarActionsButtons = () => {
           </ul>
         </ConfigProvider>
       )}
-      {true && (
-        <>
-          <ActionButton
-            style={{ backgroundColor: "var(--color-primary)" }}
-            to={
-              location.pathname === "/beom/account/sign-up"
-                ? LoginButton.path
-                : SignUpButton.path
-            }
+      {!isUserLoggedIn ? (
+        <div className={style.actionButtons}>
+          <div
+            id="largeScreen-actions"
+            ia-describedby="largeScreen-actions-description"
           >
-            {location.pathname === "/beom/account/sign-up"
-              ? t(LoginButton.label)
-              : t(SignUpButton.label)}
-          </ActionButton>
-
-          <ActionButton
+            <ActionButton
+              style={{ backgroundColor: "var(--color-primary)" }}
+              to={
+                location.pathname === "/beom/account/sign-up"
+                  ? LoginButton.path
+                  : SignUpButton.path
+              }
+            >
+              {location.pathname === "/beom/account/sign-up"
+                ? t(LoginButton.label)
+                : t(SignUpButton.label)}
+            </ActionButton>
+            <div id="largeScreen-actions-description" class="sr-only">
+              This is a container for large screen actions, displaying
+              login/signup or login/addInstitute options dynamically.
+            </div>
+            <ActionButton
+              style={{
+                color: "var(--color-primary)",
+                backgroundColor: "#F6F6F6",
+              }}
+              to={
+                location.pathname === "/beom/institute/addCenter"
+                  ? LoginButton.path
+                  : AddInstituteButton.path
+              }
+            >
+              {location.pathname === "/beom/institute/addCenter"
+                ? LoginButton.label
+                : AddInstituteButton.label}
+            </ActionButton>
+          </div>
+          <div id="smallScreen-actions">
+            <ActionButton
+              style={{
+                color: "var(--color-primary)",
+                borderRadius: "50px",
+              }}
+              to={
+                location.pathname === "/beom/institute/addCenter"
+                  ? LoginButton.path
+                  : AddInstituteButton.path
+              }
+            >
+              {location.pathname === "/beom/institute/addCenter"
+                ? LoginButton.icon
+                : AddInstituteButton.icon}
+            </ActionButton>{" "}
+            <ActionButton
+              style={{
+                color: "var(--color-accent)",
+                background: "var(--color-primary)",
+                borderRadius: "50px",
+              }}
+              to={
+                location.pathname === "/beom/account/sign-up"
+                  ? LoginButton.path
+                  : SignUpButton.path
+              }
+            >
+              {location.pathname === "/beom/account/sign-up"
+                ? LoginButton.icon
+                : SignUpButton.icon}
+            </ActionButton>
+          </div>
+        </div>
+      ) : (
+        <CenteredFlexComponent className={style.actionButtonsOnMode}>
+          <Button
+            type="Link"
             style={{
-              color: "var(--color-primary)",
-              backgroundColor: "#F6F6F6",
+              fontFamily: fontFamilyMedium,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
             }}
-            to={
-              location.pathname === "/beom/institute/addCenter"
-                ? LoginButton.path
-                : AddInstituteButton.path
+          >
+            <IoSettingsSharp />
+            <u>{t("Paramètres")}</u>
+          </Button>
+          <Avatar
+            style={{
+              backgroundColor: "black",
+              fontFamily: fontFamilyMedium,
+            }}
+            title={userInfo?.email}
+          >
+            USER
+          </Avatar>
+          &nbsp;
+          <Badge count="2">
+            <Avatar
+              style={{
+                color: "black",
+                fontFamily: fontFamilyMedium,
+                background: "white",
+              }}
+            >
+              <IoMdNotifications size={"large"} />
+            </Avatar>{" "}
+          </Badge>
+          <Popover
+            placement="bottom"
+            content={
+              <Button
+                type="link"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontFamily: fontFamilyMedium,
+                }}
+                onClick={() => {
+                  logoutAction();
+                }}
+              >
+                <p style={{ color: "black" }}> Se déconnecter</p>
+              </Button>
             }
           >
-            {location.pathname === "/beom/institute/addCenter"
-              ? LoginButton.label
-              : AddInstituteButton.label}
-          </ActionButton>
-        </>
+            <Button
+              type="link"
+              style={{
+                fontFamily: fontFamilyMedium,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <RiLogoutCircleRLine size={"large"} color="red" />
+            </Button>
+          </Popover>
+        </CenteredFlexComponent>
       )}
     </Space>
   );
 };
 
 export default NavbarActionsButtons;
-
-//Static code
 export const AddInstituteButton = {
   label: "Ajouter votre établissement",
   path: `/beom/institute/addCenter`,
 };
-
-const LoginButton = {
-  label: "Se connecter",
-  path: `/beom/account/log-in`,
-};
-const SignUpButton = {
-  label: "S'inscrire",
-  path: `/beom/account/sign-up`,
-};
-const menuItems = [
-  { label: "coiffure homme", path: "/beom/BarberMen" },
-  { label: "coiffure femme", path: "/beom/BarberWomen" },
-  { label: "Hamam", path: "/beom/Hamam" },
-  { label: "Institut de beauté", path: "/beom/BeautyInstitute" },
-];

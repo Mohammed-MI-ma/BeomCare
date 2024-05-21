@@ -78,9 +78,9 @@ const HorizontalScroll = () => {
 
             <div style={{ maxWidth: "230px" }}>
               <h1 style={{ fontFamily: fontFamilyBold }}>{partner.title}</h1>
-              <p
-                style={{ fontFamily: fontFamilyLight, textTransform: "none" }}
-              ></p>
+              <p style={{ fontFamily: fontFamilyLight, textTransform: "none" }}>
+                Description Description Description
+              </p>
               <Button
                 type="link"
                 style={{
@@ -100,9 +100,7 @@ const HorizontalScroll = () => {
           </motion.div>
         ))}
       </div>
-      <div
-        style={{ width: "80%", display: "flex", justifyContent: "flex-end" }}
-      >
+      <div style={{ width: "80%", display: "flex", justifyContent: "center" }}>
         <motion.button
           className={styles.scrollButton}
           onClick={() => scroll("left")}

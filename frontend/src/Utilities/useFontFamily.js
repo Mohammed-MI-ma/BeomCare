@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 const fontFamilies = {
   fr: {
+    ExtraLight: "Primary-ExtraLight",
     Light: "Primary-Light",
     Regular: "Primary-Regular",
     SemiBold: "Primary-SemiBold",

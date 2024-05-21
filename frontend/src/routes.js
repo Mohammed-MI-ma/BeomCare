@@ -10,6 +10,9 @@ const SignUpPage = lazy(() => import("./Pages/SignUpPage"));
 const SubscriptionPage = lazy(() => import("./Pages/SubscriptionPage"));
 const LandingPage = lazy(() => import("./Pages/LandingPage"));
 
+//__protectedRoute
+const HomePage = lazy(() => import("./Pages/HomePage"));
+
 //__404_page
 const NotFoundPage = lazy(() => import("./Pages/NotFoundPage"));
 
@@ -55,6 +58,15 @@ export const routes = [
     ),
   },
 
+  // TODO: //PROTECTED ROUTE
+  {
+    path: "/beom/homepage",
+    element: (
+      <CustomSuspense id="homepage">
+        <HomePage />
+      </CustomSuspense>
+    ),
+  },
   // TODO: //404 ROUTE
   {
     path: "*",

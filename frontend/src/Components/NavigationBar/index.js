@@ -11,7 +11,7 @@ const NavigationBar = () => {
     <nav>
       <CenteredFlexComponent className={`w-full flex-col ${style.navbarStyle}`}>
         <div
-          className={`${style.navbarInnerStyle} w-full flex items-center justify-between `}
+          className={`${style.navbarInnerStyle} w-full flex items-center justify-between  `}
         >
           <Link to={"/"}>
             <div className={`cursor-pointer`}>
@@ -38,7 +38,7 @@ const Logo = () => {
     <img
       srcSet={`${beom_care_small_dark} 110w,
  ${beom_care_medium_dark} 182w`}
-      sizes="(max-width: 768px) 110px,
+      sizes="(max-width: 768px) 100px,
 (max-width: 1200px) 120px,
 120px"
       src={beom_care_small_dark}

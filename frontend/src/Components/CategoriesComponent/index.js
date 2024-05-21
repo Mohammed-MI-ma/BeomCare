@@ -14,7 +14,7 @@ const CategoriesComponent = () => {
       style={{ width: "99vw" }}
     >
       <div
-        className="container p-5 flex flex-col items-center"
+        className="container p-5 flex flex-col items-center text-center"
         style={{
           textTransform: "uppercase",
           marginTop: "70px",

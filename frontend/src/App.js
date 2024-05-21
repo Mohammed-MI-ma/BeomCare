@@ -15,12 +15,14 @@ import NavigationBar from "./Components/NavigationBar";
 import { useTranslation } from "react-i18next";
 import Footer from "./Components/Footer";
 import CookieConsent from "./Components/CookieConsent";
+import { useSelector } from "react-redux";
 
 function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const location = useLocation();
 
   const { t } = useTranslation();
+
   useEffect(() => {
     async function fetchData() {
       try {

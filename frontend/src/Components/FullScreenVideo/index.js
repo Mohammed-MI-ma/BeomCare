@@ -1,7 +1,8 @@
 // src/components/FullScreenVideo.js
 import React, { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import prop from "../../Assets/promo.mp4";
+import man from "../../Assets/images/man.webp";
+import style from "./styles.module.css";
 const FullScreenVideo = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -27,19 +28,24 @@ const FullScreenVideo = () => {
   }, []);
 
   return (
-    <div className="video-container" ref={ref} style={{ position: "absolute" }}>
-      {inView && shouldLoadVideo && (
-        <video
-          src={prop}
-          style={{ height: "500px" }}
-          autoPlay
-          loop
-          muted
-          playsInline
-        />
-      )}
-    </div>
+    <div
+      className={style.backGroundImage}
+      style={{
+        background: `url('${man}')`,
+      }}
+    />
   );
 };
-
 export default FullScreenVideo;
+/**<div className="video-container" ref={ref} style={{ position: "absolute" }}>
+  {inView && shouldLoadVideo && (
+    <video
+      src={prop}
+      style={{ height: "500px" }}
+      autoPlay
+      loop
+      muted
+      playsInline
+    />
+  )}
+</div> */

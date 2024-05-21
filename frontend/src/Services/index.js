@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const loadFonts = async (fonts) => {
   await Promise.all(
     Object.keys(fonts).map(async (key) => {

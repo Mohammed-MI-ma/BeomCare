@@ -1,56 +1,125 @@
-import { Button, Divider, Form, Input } from "antd";
-import React, { useEffect, useState } from "react";
-import useFontFamily from "../../Utilities/useFontFamily";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { CustomDivider, LightLogoBeom } from "../LoginPage";
+import { Link, useNavigate } from "react-router-dom";
+
+import {
+  Button,
+  Divider,
+  Form,
+  Input,
+  Modal,
+  Checkbox,
+  ConfigProvider,
+  message,
+} from "antd";
+import { useFormik } from "formik";
+
+import useFontFamily from "../../Utilities/useFontFamily";
+
+//___COMPONENTS
 import PhoneInput from "react-phone-number-input";
+import ReCAPTCHA from "react-google-recaptcha";
+
+import { RECAPTCHA } from "../../config.dev";
+import { signupSchema } from "../../Utilities/validationSchema";
+
+//___style
+import style from "./signUp.module.css";
+import PolitiqueSecurite from "../../Components/Utilities/PolitiqueSecurite";
+import RightContent from "../../Components/Utilities/RightContent";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../Reducers/authService/actions/authAction";
 
 const SignUpPage = () => {
+  //__FONTS
+  const phoneInputRef = useRef(null); // Create a ref for the phone input
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const fontFamilyLight = useFontFamily("Light");
   const fontFamilyBold = useFontFamily("SemiBold");
+  const [isRegistrationInProgress, setIsRegistrationInProgress] =
+    useState(false);
+
   const { t } = useTranslation();
-  const [value, setValue] = useState();
+  //
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => setIsModalOpen(true);
+
   useEffect(() => {
-    console.log(value);
-  }, [value]);
+    const handleBeforeUnload = (event) => {
+      if (isRegistrationInProgress) {
+        event.preventDefault();
+        event.returnValue = "";
+        return "";
+      }
+    };
 
-  const validateMessages = {
-    required: "${label} is required!",
-    types: {
-      email: <p style={{ fontFamily: fontFamilyLight }}>{t("invalidEmail")}</p>,
-    },
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isRegistrationInProgress]);
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
+  useEffect(() => {
+    // Set focus on the phone input field when the component mounts
+    if (phoneInputRef.current) {
+      phoneInputRef.current.focus();
+    }
 
-  const onFinish = (values) => {
-    console.log(values);
+    // Update button's disabled state based on form validity
+  }, []); // Re-run effect when formik.isValid changes
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirmedPassword: "",
+      phoneNumber: "",
+      termsOfServiceAccepted: true,
+      privacyPolicyAccepted: true,
+      recaptchaToken: null,
+    },
+    validationSchema: signupSchema,
+  });
+  const handleSubmit = async () => {
+    // Validate the form
+    const errors = await formik.validateForm();
+
+    // If there are validation errors, do not submit the form
+    if (Object.keys(errors).length !== 0) {
+      return;
+    }
+
+    setIsRegistrationInProgress(true);
+
+    try {
+      const response = dispatch(registerUser({ ...formik.values }));
+
+      if (response && response.status) {
+        // Reset registerData after successful submission
+        navigate("/beom/account/log-in");
+      } else if (response && response.message) {
+      } else {
+        message.error(response.message);
+      }
+    } finally {
+      setIsRegistrationInProgress(false);
+    }
   };
 
   return (
     <main
-      className={`bg-cover relative flex flex-col-reverse lg:flex-row items-center w-full `}
-      style={{
-        width: "95vw",
-        height: "calc( 100vh - 90px )",
-        maxWidth: "1440px",
-        left: "50%",
-        transform: " translateX(-50%)",
-        maxHeight: "700px",
-      }}
+      className={` ${style.formContainer} bg-cover flex-col-reverse lg:flex-row`}
     >
-      <main
-        className={`lg:w-1/2 h-full p-4 items-center justify-center flex gap-1 flex-col `}
-        style={{
-          background: "#F5F5F5",
-          borderRadius: "30px",
-          color: "var(--color-primary)",
-          position: "absolute",
-          left: "10px",
-        }}
-      >
-        <section style={{ width: "379px" }}>
-          <Form validateMessages={validateMessages} onFinish={onFinish}>
+      <main className={`lg:w-1/2 h-full p-4 gap-1 `}>
+        <section>
+          <Form>
+            {/**TODO: HEADLINE */}
             <h1
+              className={style.header}
               style={{
                 fontFamily: fontFamilyBold,
                 textAlign: "center",
@@ -59,7 +128,7 @@ const SignUpPage = () => {
             >
               {t("Nouveau sur BEOM CARE ?")}
             </h1>
-
+            {/**TODO: FORM */}
             <div
               style={{
                 textAlign: "left",
@@ -67,108 +136,238 @@ const SignUpPage = () => {
                 flexDirection: "column",
               }}
             >
-              <Form.Item
-                name={["user", "email"]}
-                rules={[
-                  {
-                    type: "email",
-                  },
-                ]}
+              {/*******************TODO::: PHONE NUMBER */}
+              <p
+                style={{
+                  fontFamily: fontFamilyLight,
+                }}
               >
-                <p
-                  style={{
-                    fontFamily: fontFamilyLight,
-                  }}
-                >
-                  {t("Téléphone portable *")}
+                {t("Téléphone portable *")}
+              </p>
+              <PhoneInput
+                defaultCountry="MA"
+                ref={phoneInputRef} // Attach the ref to the phone input field
+                style={{ fontFamily: fontFamilyLight }}
+                placeholder={t("Entrer votre numéro")}
+                value={formik.values.phoneNumber}
+                onChange={(value) => formik.setFieldValue("phoneNumber", value)}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+                <p style={{ fontFamily: fontFamilyLight, color: "red" }}>
+                  {formik.errors.phoneNumber}
                 </p>
-
-                <PhoneInput
-                  defaultCountry="MA"
-                  style={{
-                    fontFamily: fontFamilyLight,
-                  }}
-                  placeholder={t("Entrer votre numéro")}
-                  value={value}
-                  onChange={setValue}
-                />
-              </Form.Item>
-              {/**Password*/}
-              <Form.Item
-                name={["user", "email"]}
-                rules={[
-                  {
-                    type: "email",
-                  },
-                ]}
+              ) : (
+                <p style={{ opacity: 0 }}>&nbsp;</p>
+              )}
+              {/*******************/}
+              {/*******************/}
+              {/*******************/}
+              {/*******************/}
+              {/*******************TODO::: EMAIL */}
+              <p
+                style={{
+                  fontFamily: fontFamilyLight,
+                }}
               >
-                <p
-                  style={{
-                    fontFamily: fontFamilyLight,
-                  }}
-                >
-                  {t("Email *")}
+                {t("Email *")}
+              </p>
+              <Input
+                name="email"
+                allowClear
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                style={{ fontFamily: fontFamilyLight }}
+              />
+              {formik.touched.email && formik.errors.email ? (
+                <p style={{ fontFamily: fontFamilyLight, color: "red" }}>
+                  {formik.errors.email}
                 </p>
-                <Input allowClear />
-              </Form.Item>
-              {/**Password*/}
-              <Form.Item
+              ) : (
+                <p style={{ opacity: 0 }}>&nbsp;</p>
+              )}
+              {/*******************/}
+              {/*******************/}
+              {/*******************/}
+              {/*******************/}
+              {/*******************TODO::: PASSWORD */}
+              <p style={{ fontFamily: fontFamilyLight }}>
+                {t("Mot de passe *")}
+              </p>
+              <Input.Password
                 name="password"
-                rules={[
-                  {
-                    required: true,
-                    message: (
-                      <p style={{ fontFamily: fontFamilyLight }}>
-                        {t("passwordInputPrompt")}
-                      </p>
-                    ),
-                  },
-                ]}
-              >
-                <p
-                  style={{
-                    fontFamily: fontFamilyLight,
-                  }}
-                >
-                  {t("Mot de passe*")}
+                allowClear
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+                style={{ fontFamily: fontFamilyLight }}
+              />
+              {formik.touched.password && formik.errors.password ? (
+                <p style={{ fontFamily: fontFamilyLight, color: "red" }}>
+                  {formik.errors.password}
                 </p>
-                <Input.Password allowClear />
-              </Form.Item>
-              {/**Submit Button */}
+              ) : (
+                <p style={{ opacity: 0 }}>.</p>
+              )}
+              {/*******************/}
+              {/*******************/}
+              {/*******************/}
+              {/*******************/}
+              {/*******************TODO::: BUTTON NEXT */}
               <Button
                 className="w-full"
                 size="large"
-                htmlType="submit"
+                onClick={(e) => {
+                  showModal();
+                }}
                 style={{
                   background: "var(--color-primary)",
                   fontFamily: fontFamilyLight,
                   fontSize: "13px",
                 }}
               >
-                {t("Créer mon compte")}
+                {t("Suivant")}
               </Button>
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorBorder: "var(--color-primary)",
+                    colorPrimary: "var(--color-primary)",
+                  },
+                }}
+              >
+                <Modal
+                  title={null}
+                  visible={isModalOpen} // Changed from 'open' to 'visible'
+                  onCancel={handleCancel}
+                  centered
+                  footer={
+                    <>
+                      <Button
+                        type="submit"
+                        disabled={!formik.isValid}
+                        className="w-full"
+                        loading={isRegistrationInProgress}
+                        size="large"
+                        style={{
+                          background: formik.isValid
+                            ? "var(--color-primary) "
+                            : "gray",
+                          fontFamily: fontFamilyLight,
+                          fontSize: "13px",
+                          color: "white",
+                        }}
+                        onClick={handleSubmit}
+                      >
+                        {t("S'inscrire")}
+                      </Button>
+                    </>
+                  } // Removed footer buttons
+                >
+                  {/**********************/}
+                  {/**********************/}
+                  {/**********************/}
+                  {/**********************/}
+                  {/**********************/}
+                  {/**********************/}
+                  {/**********************/}
+                  <h1
+                    style={{
+                      fontFamily: fontFamilyBold,
+                      textAlign: "center",
+                      marginBottom: "11px",
+                    }}
+                  >
+                    {t("Nouveau sur BEOM CARE ?")}
+                  </h1>
+                  <ReCAPTCHA
+                    sitekey={RECAPTCHA.RECAPTCHA_SITE_KEY}
+                    theme="dark"
+                    onChange={(token) =>
+                      formik.setFieldValue("recaptchaToken", token)
+                    }
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.recaptchaToken &&
+                    formik.errors.recaptchaToken && (
+                      <p style={{ fontFamily: fontFamilyLight, color: "red" }}>
+                        {formik.errors.recaptchaToken}
+                      </p>
+                    )}
+                  <Checkbox
+                    name="termsOfServiceAccepted"
+                    checked={formik.values.termsOfServiceAccepted}
+                    onChange={formik.handleChange}
+                    style={{
+                      fontFamily: fontFamilyLight,
+                      fontSize: "13px",
+                    }}
+                  >
+                    {t("Vous accepter les conditions d'utilisation")}
+                  </Checkbox>
+                  {formik.touched.termsOfServiceAccepted &&
+                    formik.errors.termsOfServiceAccepted && (
+                      <p style={{ fontFamily: fontFamilyLight, color: "red" }}>
+                        {formik.errors.termsOfServiceAccepted}
+                      </p>
+                    )}
+                  <Checkbox
+                    name="privacyPolicyAccepted"
+                    checked={formik.values.privacyPolicyAccepted}
+                    onChange={formik.handleChange}
+                    style={{
+                      fontFamily: fontFamilyLight,
+                      fontSize: "13px",
+                    }}
+                  >
+                    {t("Vous accepter la politique de confidentialité")}
+                  </Checkbox>
+                  {formik.touched.privacyPolicyAccepted &&
+                    formik.errors.privacyPolicyAccepted && (
+                      <p style={{ fontFamily: fontFamilyLight, color: "red" }}>
+                        {formik.errors.privacyPolicyAccepted}
+                      </p>
+                    )}
+                  <Divider />
+                  <p style={{ fontFamily: fontFamilyLight }}>
+                    {t("Confirmer le mot de passe *")}
+                  </p>
+                  <Input.Password
+                    name="confirmedPassword"
+                    allowClear
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.confirmedPassword}
+                    style={{
+                      fontFamily: fontFamilyLight,
+                      border: "1px solid black",
+                    }}
+                  />
+                  {formik.touched.confirmedPassword &&
+                    formik.errors.confirmedPassword && (
+                      <p style={{ fontFamily: fontFamilyLight, color: "red" }}>
+                        {formik.errors.confirmedPassword}
+                      </p>
+                    )}
+                  <PolitiqueSecurite style={{ fontFamily: fontFamilyLight }} />
+                </Modal>
+              </ConfigProvider>
+              {/* Button to submit the form */}
+
               <br></br>
-              <PolitiqueSecurite style={{ fontFamily: fontFamilyLight }} />{" "}
-              {/**Custom Divider */}
               <Divider
                 style={{
                   fontFamily: fontFamilyLight,
                 }}
               >
-                Ou
+                {t("Ou")}
               </Divider>
-              {/**Text */}
-              {/**Subscribe Button */}
               <Link to="/beom/account/log-in">
                 <Button
-                  className="w-full"
+                  className={style.submitButton}
                   size="large"
-                  style={{
-                    background: "var(--color-accent)",
-                    color: "black",
-                    fontFamily: fontFamilyLight,
-                    fontSize: "13px",
-                  }}
+                  style={{ fontFamily: fontFamilyLight }}
                 >
                   {t("Se connecter")}
                 </Button>
@@ -178,55 +377,9 @@ const SignUpPage = () => {
         </section>
       </main>
 
-      <main
-        className={`lg:w-1/2 p-4 h-full items-center justify-center flex gap-1 flex-col shadow-lg`}
-        style={{
-          background: "var(--color-primary)",
-          color: "var(--color-accent)",
-          borderRadius: "30px",
-          position: "absolute",
-          right: "10px",
-          boxShadow: "rgba(0, 0, 0, 0.6) -4px 0px 17px 0px",
-        }}
-      >
-        <LightLogoBeom />
-        <div
-          style={{
-            color: "var(--color-accent)",
-            paddingLeft: "100px",
-            paddingRight: "100px",
-            bottom: "61px",
-            fontSize: "11px",
-            position: "absolute",
-            fontFamily: fontFamilyLight,
-            textAlign: "center",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <CustomDivider />
-          <p>{t("beomSlogan")}</p>
-        </div>
-      </main>
+      <RightContent />
     </main>
   );
 };
 
 export default SignUpPage;
-
-const PolitiqueSecurite = ({ style }) => {
-  return (
-    <p
-      style={{
-        ...style,
-        fontSize: "var(--font-extra-small-size)",
-        textAlign: "center",
-      }}
-    >
-      Vos informations sont traitées par BEOM CARE, consultez notre politique de
-      confidentialité. Ce site est soumis à la Politique de Confidentialité et
-      aux Conditions d’Utilisations de Google.
-    </p>
-  );
-};

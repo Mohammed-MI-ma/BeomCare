@@ -35,6 +35,7 @@ const PartnersComponent = () => {
           textTransform: "uppercase",
           marginTop: "70px",
           marginBottom: "70px",
+          textAlign: "center",
         }}
       >
         <CustomDivider style={{ marginBottom: "10px" }} />

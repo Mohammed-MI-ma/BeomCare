@@ -4,6 +4,8 @@ import CenteredFlexComponent from "../Utilities/CenteredFlexComponent";
 import { Button } from "antd";
 import useFontFamily from "../../Utilities/useFontFamily";
 import { useTranslation } from "react-i18next";
+import style from "./promoSectionComponent.module.css";
+
 const PromoSectionComponent = () => {
   const { t } = useTranslation();
   const fontFamilyLight = useFontFamily("Light");
@@ -16,7 +18,7 @@ const PromoSectionComponent = () => {
         margin: "0px",
         background: "black",
         color: "white",
-        height: "500px",
+        height: "300px",
         position: "relative",
       }}
     >
@@ -33,8 +35,7 @@ const PromoSectionComponent = () => {
       </div>
 
       <div
-        style={{ transform: "translateY(100%)", color: "black" }}
-        className="grid grid-cols-2 md:grid-cols-3 bg-white gap-5 p-5 shadow-netflix p-4 rounded-lg text-center absolute "
+        className={`grid grid-cols-1 shadow-lg md:grid-cols-3 bg-white gap-5 p-5 shadow-netflix p-4 rounded-lg text-center absolute ${style.searchEngine}`}
       >
         <CenteredFlexComponent
           style={{ flexDirection: "column", alignItems: "start" }}
@@ -49,6 +50,7 @@ const PromoSectionComponent = () => {
           <p>Adresse, ville...</p>
         </CenteredFlexComponent>
         <Button
+          size="large"
           style={{
             background: "var(--color-primary)",
             fontFamily: fontFamilyLight,

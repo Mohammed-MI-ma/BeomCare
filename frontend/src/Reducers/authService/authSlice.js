@@ -1,15 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
+const accessToken = localStorage.getItem("accessToken") || null;
+const refreshToken = localStorage.getItem("refreshToken") || null;
+const userInfo = JSON.parse(localStorage.getItem("userData")) || null;
 
 const initialState = {
-  userInfo: null,
-  userToken: null,
-  refreshToken: null,
+  userInfo: userInfo,
+  accessToken: accessToken,
+  refreshToken: refreshToken,
   registerData: null,
   loginData: {},
   error: null,
   success: false,
   forgotPasswordData: {},
-  isLoggedIn: false,
+  isUserLoggedIn: Boolean(accessToken),
   loading: false,
 };
 
@@ -42,12 +45,12 @@ const authSlice = createSlice({
     resetRegisterData: (state) => {
       state.registerData = {};
     },
-    setIsLoggedIn: (state, { payload }) => {
-      state.isLoggedIn = payload;
+    setUserIsLoggedIn: (state, { payload }) => {
+      state.isUserLoggedIn = payload;
     },
     setUserToken: (state, { payload }) => {
-      state.userToken = payload;
-      localStorage.setItem("access_token", payload);
+      state.accessToken = payload;
+      localStorage.setItem("accessToken", payload);
     },
     // Define your reducer actions here
     setLoading: (state, { payload }) => {
@@ -69,7 +72,7 @@ export const {
   setLoginData,
   setRefreshToken,
   resetRegisterData,
-  setIsLoggedIn,
+  setUserIsLoggedIn,
   setUserToken,
   setLoading,
   setError,
