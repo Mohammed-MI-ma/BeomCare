@@ -87,7 +87,7 @@ const Footer = () => {
           component: <Link to="/web/guest/eat">{t("Rejoignez-nous")}</Link>,
         },
         {
-          id: "Rejoignez-nous",
+          id: "Politique de confidentialité",
           component: (
             <Link to="/beom/aboutUs/privacy-policy">
               {t("Politique de confidentialité")}
@@ -95,7 +95,7 @@ const Footer = () => {
           ),
         },
         {
-          id: "Rejoignez-nous",
+          id: "Support Beom",
           component: (
             <Link to="/beom/aboutUs/privacy-policy">{t("Support Beom")}</Link>
           ),
@@ -209,8 +209,7 @@ const Footer = () => {
   }, []);
   return (
     <footer
-      className={`bg-cover absolute w-full flex items-center flex-col`}
-      style={{ background: "white" }}
+      className={`bg-cover absolute w-full flex items-center flex-col bg-white mt-10`}
     >
       <div
         className={`grid lg:grid-cols-4 sm:grid-cols-1 md:grid-cols-2 ${style.grid}`}

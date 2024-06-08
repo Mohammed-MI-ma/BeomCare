@@ -12,7 +12,9 @@ const PolitiqueSecurite = ({ style }) => {
         textAlign: "center",
       }}
     >
-      {t("Vos informations sont traitées par BEOM CARE")}
+      {t(
+        "Vos informations sont traitées par BEOM CARE en toute confidentialité"
+      )}
     </p>
   );
 };

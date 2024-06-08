@@ -20,7 +20,7 @@ export const handleChangeRegisterInput = (name, value) => (dispatch) => {
 };
 
 export const loginUser =
-  (postData, maxRetries = 3) =>
+  (postData, maxRetries = 1) =>
   async (dispatch) => {
     return new Promise(async (resolve, reject) => {
       let response = {
@@ -61,20 +61,12 @@ export const loginUser =
             }
           })
           .catch((err) => {
-            retries++;
-
-            if (retries < maxRetries) {
-              // Retry the request after a delay (e.g., 1 second)
-              setTimeout(() => {
-                performLoginRequest();
-              }, 1000);
-            } else {
-              const message =
-                "Impossible de se connecter au serveur. Veuillez réessayer ultérieurement.";
-              response.message = message;
-              message.error(message);
-              resolve(response); // Reject the promise with the response
-            }
+            const message = err.response?.data
+              ? err.response?.data.message
+              : "Probleme serveur";
+            response.message = message;
+            console.error(message);
+            resolve(response); // Reject the promise with the response
           });
       };
 

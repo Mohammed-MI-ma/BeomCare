@@ -2,8 +2,7 @@ import React from "react";
 import { CustomDivider } from "../../Pages/LoginPage";
 import useFontFamily from "../../Utilities/useFontFamily";
 import { useTranslation } from "react-i18next";
-import PropTypes from "prop-types";
-import CenteredFlexComponent from "../Utilities/CenteredFlexComponent";
+
 import {
   ActionButton,
   AddInstituteButton,

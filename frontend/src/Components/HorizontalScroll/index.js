@@ -6,6 +6,7 @@ import useFontFamily from "../../Utilities/useFontFamily";
 import { Button } from "antd";
 import { CustomDivider } from "../../Pages/LoginPage";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 export const partners = [
   {
@@ -43,6 +44,8 @@ export const partners = [
 ];
 
 const HorizontalScroll = () => {
+  const { data } = useSelector((state) => state.application.categories);
+
   const scrollRef = useRef(null);
   const fontFamilyLight = useFontFamily("Light");
   const fontFamilyBold = useFontFamily("SemiBold");
@@ -62,7 +65,7 @@ const HorizontalScroll = () => {
       transition={{ duration: 0.5 }}
     >
       <div className={styles.scrollableContent} ref={scrollRef}>
-        {partners.map((partner) => (
+        {data.map((partner) => (
           <motion.div
             key={partner.id}
             className={styles.item}
@@ -77,9 +80,9 @@ const HorizontalScroll = () => {
             />
 
             <div style={{ maxWidth: "230px" }}>
-              <h1 style={{ fontFamily: fontFamilyBold }}>{partner.title}</h1>
+              <h1 style={{ fontFamily: fontFamilyBold }}> {partner?.title}</h1>
               <p style={{ fontFamily: fontFamilyLight, textTransform: "none" }}>
-                Description Description Description
+                {partner?.description}
               </p>
               <Button
                 type="link"

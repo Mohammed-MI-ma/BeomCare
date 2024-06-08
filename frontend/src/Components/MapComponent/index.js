@@ -1,27 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import L from "leaflet"; // Import Leaflet library
+import * as L from "leaflet";
 import { motion } from "framer-motion";
 
 const MapComponent = ({ selectedLocation, setSelectedLocation }) => {
+  const [localLocation, setLocalLocation] = useState(selectedLocation);
+
+  useEffect(() => {
+    setLocalLocation(selectedLocation);
+  }, [selectedLocation]);
+
   const MapClickHandler = () => {
     useMapEvents({
       click: (e) => {
-        setSelectedLocation({
-          lat: e.latlng.lat,
-          lng: e.latlng.lng,
-        });
+        const { lat, lng } = e.latlng;
+        console.log("Latitude:", lat);
+        console.log("Longitude:", lng);
+
+        setSelectedLocation({ lat, lng });
+        setLocalLocation({ lat, lng });
       },
     });
     return null;
   };
 
-  // Define a custom icon
   const customIcon = new L.Icon({
-    iconUrl: "https://svgsilh.com/svg/309739.svg", // Path to your custom icon image
-    iconSize: [32, 32], // Size of the icon
-    iconAnchor: [16, 32], // Anchor point of the icon
+    iconUrl: "https://svgsilh.com/svg/309739.svg",
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
   });
+
   return (
     <motion.div
       initial={{ opacity: 0, translateY: 20 }}
@@ -29,18 +37,15 @@ const MapComponent = ({ selectedLocation, setSelectedLocation }) => {
       transition={{ duration: 0.5, delay: 0.5 }}
     >
       <MapContainer
-        center={[selectedLocation.lat, selectedLocation.lng]}
+        center={[localLocation.lat, localLocation.lng]}
         zoom={16}
-        style={{
-          height: "300px",
-          width: "100%",
-        }}
+        style={{ height: "300px", width: "100%" }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {selectedLocation && (
+        {localLocation && (
           <Marker
             icon={customIcon}
-            position={[selectedLocation.lat, selectedLocation.lng]}
+            position={[localLocation.lat, localLocation.lng]}
           />
         )}
         <MapClickHandler />
@@ -49,18 +54,4 @@ const MapComponent = ({ selectedLocation, setSelectedLocation }) => {
   );
 };
 
-const LocationForm = () => {
-  const [selectedLocation, setSelectedLocation] = useState({
-    lat: 34.02184645937183, // Latitude for Rabat, Hassan, Morocco
-    lng: -6.837458135560156, // Longitude for Rabat, Hassan, Morocco
-  });
-
-  return (
-    <MapComponent
-      selectedLocation={selectedLocation}
-      setSelectedLocation={setSelectedLocation}
-    />
-  );
-};
-
-export default LocationForm;
+export default MapComponent;

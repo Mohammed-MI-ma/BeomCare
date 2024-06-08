@@ -2,8 +2,15 @@ import React from "react";
 import style from "./CardSubscription.module.css";
 import HoverableCard from "../../../Components/Utilities/HoverableCard";
 import { motion } from "framer-motion";
+import ResponsiveIcon from "../../../Components/Utilities/ResponsiveIcon";
 
-const CardSubscription = ({ title, icon, delay, onClick }) => {
+const CardSubscription = ({ title, icon, delay, onClick, iconArray }) => {
+  console.log(iconArray);
+  const iconImages_notes = [
+    { src: iconArray[0], width: 25 },
+    { src: iconArray[1], width: 25, default: true },
+    { src: iconArray[2], width: 45 },
+  ];
   return (
     <motion.div
       initial={{ opacity: 0, translateY: 20 }}
@@ -13,7 +20,7 @@ const CardSubscription = ({ title, icon, delay, onClick }) => {
     >
       <HoverableCard>
         <div className={style.cardSubscription}>
-          <img alt={title} width="50" height={"50"} src={icon} />
+          <ResponsiveIcon alt="Example Icon" images={iconImages_notes} />
           <h2 className={style.cardTitle}>{title}</h2>
         </div>
       </HoverableCard>

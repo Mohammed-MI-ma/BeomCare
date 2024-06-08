@@ -5,7 +5,7 @@ import { CustomDivider } from "../LoginPage";
 import MultiStepForm from "./MultiStepForm";
 import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Breadcrumb, Divider, Tooltip } from "antd";
-
+import style from "./SubscriptionPage.module.css";
 const SubscriptionPage = () => {
   const fontFamilyBold = useFontFamily("SemiBold");
   const { t } = useTranslation();
@@ -13,42 +13,19 @@ const SubscriptionPage = () => {
 
   return (
     <main
-      className={`bg-cover relative flex flex-col-reverse lg:flex-row items-center w-full `}
-      style={{
-        width: "95vw",
-        height: "calc( 100vh - 90px )",
-        maxWidth: "1440px",
-        left: "50%",
-        transform: " translateX(-50%)",
-        maxHeight: "700px",
-      }}
+      className={`${style.mainContainer} bg-cover relative  flex-col-reverse lg:flex-row items-center w-full `}
     >
       <main
-        className={`lg:w-1/2 h-full p-4 items-center justify-center flex gap-1 flex-col `}
-        style={{
-          background: "#F5F5F5",
-          borderRadius: "30px",
-          color: "var(--color-primary)",
-          position: "absolute",
-          left: "10px",
-        }}
+        className={` lg:w-1/2 h-full p-4 items-center justify-center flex gap-1 flex-col `}
       >
         <MultiStepForm />
       </main>
       {/**Static Part */}
       <main
-        className={`lg:w-1/2 p-4  h-full items-center justify-center flex gap-1 flex-col shadow-lg`}
-        style={{
-          background: "var(--color-primary)",
-          color: "var(--color-accent)",
-          zIndex: 1000,
-          borderRadius: "30px",
-          position: "absolute",
-          right: "10px",
-          boxShadow: "rgba(0, 0, 0, 0.6) -4px 0px 17px 0px",
-        }}
+        className={` ${style.flyer} lg:w-1/2 p-4  h-full items-center justify-center flex gap-1 flex-col shadow-lg`}
       >
         <h1
+          className={`${style.hide}`}
           style={{
             fontFamily: fontFamilyBold,
             fontSize: "20px",
@@ -66,6 +43,7 @@ const SubscriptionPage = () => {
         </p>
         <Avatar.Group shape="circle">
           <Avatar
+            size={"default"}
             style={{
               backgroundColor: "#fde3cf",
             }}
@@ -80,6 +58,7 @@ const SubscriptionPage = () => {
             K
           </Avatar>
           <Avatar
+            size={"default"}
             style={{
               backgroundColor: "#87d068",
             }}
@@ -92,18 +71,37 @@ const SubscriptionPage = () => {
             icon={<UserOutlined />}
           />{" "}
           <Avatar
+            size={"default"}
+            style={{
+              backgroundColor: "#fde3cf",
+            }}
+          >
+            A
+          </Avatar>
+          <Avatar
+            size={"default"}
             style={{
               backgroundColor: "orange",
             }}
             icon={<UserOutlined />}
           />{" "}
           <Avatar
+            size={"default"}
             style={{
               backgroundColor: "green",
             }}
             icon={<UserOutlined />}
-          />
+          />{" "}
           <Avatar
+            size={"default"}
+            style={{
+              backgroundColor: "#fde3cf",
+            }}
+          >
+            A
+          </Avatar>
+          <Avatar
+            size={"default"}
             style={{
               backgroundColor: "#1677ff",
             }}
@@ -111,6 +109,7 @@ const SubscriptionPage = () => {
           />
         </Avatar.Group>
         <div
+          className={`${style.hide}`}
           style={{
             color: "var(--color-accent)",
             paddingLeft: "100px",
@@ -120,7 +119,6 @@ const SubscriptionPage = () => {
             position: "absolute",
             fontFamily: fontFamilyLight,
             textAlign: "center",
-            display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}

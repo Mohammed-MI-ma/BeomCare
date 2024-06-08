@@ -4,10 +4,12 @@ import { useTranslation } from "react-i18next";
 import CenteredFlexComponent from "../../../Components/Utilities/CenteredFlexComponent";
 import CardSubscription from "../CardSubscription";
 import { partners } from "../../../Components/HorizontalScroll";
+import { useSelector } from "react-redux";
 
 const StepOne = ({ nextStep, handleChange, values }) => {
   const fontFamilySemiBold = useFontFamily("SemiBold");
   const { t } = useTranslation();
+  const { data } = useSelector((state) => state.application.categories);
 
   const handleCardClick = (cardId, label) => {
     handleChange("category")({ cardId: cardId, label: label }); // Update the selected category in the parent state
@@ -30,9 +32,10 @@ const StepOne = ({ nextStep, handleChange, values }) => {
           <div className="container mx-auto">
             <div className="mx-auto">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
-                {partners.map((card, index) => (
+                {data.map((card, index) => (
                   <CardSubscription
-                    key={card.id}
+                    key={card.index}
+                    iconArray={card?.icons}
                     title={card.title}
                     image={card.icon}
                     onClick={() => handleCardClick(card.id, card.title)} // Handle click event

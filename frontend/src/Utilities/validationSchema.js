@@ -37,3 +37,20 @@ export const loginSchema = yup.object().shape({
 
   recaptchaToken: yup.string().required("Veuillez compléter le reCAPTCHA"),
 });
+export const partnerSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("E-mail invalide")
+    .required("L'e-mail est obligatoire"),
+  category: yup.string().required("La catégorie est obligatoire"),
+  businessName: yup.string().required("Le nom business est obligatoire"),
+
+  phone: yup.string().required("Le numéro de téléphone est obligatoire"),
+  termsOfServiceAccepted: yup
+    .bool()
+    .oneOf([true], "Vous devez accepter les conditions d'utilisation"),
+  privacyPolicyAccepted: yup
+    .bool()
+    .oneOf([true], "Vous devez accepter la politique de confidentialité"),
+  recaptchaToken: yup.string().required("Veuillez compléter le reCAPTCHA"),
+});

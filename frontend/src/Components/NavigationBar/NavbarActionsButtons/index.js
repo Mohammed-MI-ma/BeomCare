@@ -5,6 +5,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { IoStorefrontOutline } from "react-icons/io5";
 import { IoMdNotifications, IoIosLogIn } from "react-icons/io";
+import { FaRegNewspaper } from "react-icons/fa";
 
 import { Avatar, Badge, Button, ConfigProvider, Popover, Space } from "antd";
 import { Link } from "react-router-dom";
@@ -66,7 +67,7 @@ const NavbarActionsButtons = () => {
   const SignUpButton = {
     label: "S'inscrire",
     path: `/beom/account/sign-up`,
-    icon: <IoIosLogIn size={"20px"} />,
+    icon: <FaRegNewspaper size={"20px"} />,
   };
   const menuItems = [
     { label: "coiffure homme", path: "/beom/BarberMen" },
@@ -137,7 +138,7 @@ const NavbarActionsButtons = () => {
                 ? t(LoginButton.label)
                 : t(SignUpButton.label)}
             </ActionButton>
-            <div id="largeScreen-actions-description" class="sr-only">
+            <div id="largeScreen-actions-description" className="sr-only">
               This is a container for large screen actions, displaying
               login/signup or login/addInstitute options dynamically.
             </div>
@@ -206,6 +207,7 @@ const NavbarActionsButtons = () => {
             <u>{t("Paramètres")}</u>
           </Button>
           <Avatar
+            size={"default"}
             style={{
               backgroundColor: "black",
               fontFamily: fontFamilyMedium,
@@ -217,6 +219,7 @@ const NavbarActionsButtons = () => {
           &nbsp;
           <Badge count="2">
             <Avatar
+              size={"default"}
               style={{
                 color: "black",
                 fontFamily: fontFamilyMedium,

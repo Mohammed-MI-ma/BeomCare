@@ -1,5 +1,5 @@
 /* eslint-disable no-template-curly-in-string */
-import { Button, Divider, Form, Input, Spin } from "antd";
+import { Button, Divider, Form, Input, Spin, message } from "antd";
 import React, { useEffect, useState } from "react";
 import useFontFamily from "../../Utilities/useFontFamily";
 import { useTranslation } from "react-i18next";
@@ -93,8 +93,8 @@ const LoginPage = () => {
 
     try {
       const response = await dispatch(loginUser({ ...formik.values }));
-      console.log("response", response);
       if (response && response.status) {
+        message.success(t("Connecté avec succes"));
         dispatch(setUserIsLoggedIn(true));
         dispatch(
           setCredentials({
@@ -104,20 +104,15 @@ const LoginPage = () => {
           })
         );
         dispatch(setUserToken(response?.accessToken));
-        console.log("666666");
-
-        // Reset registerData after successful submission
         navigate("/beom/homepage");
-        console.log("zzzz");
       } else if (response && response.message) {
-        console.log("zz222222zz");
+        message.warning(response?.message);
       } else {
-        console.log("zz222222zzaaaaaaaa");
-
+        message.warning(t("Echec"));
         console.error(response.message);
       }
     } catch (error) {
-      console.error(error);
+      message.error(t("Error", error));
     } finally {
       setIsLoginInProgress(false);
     }

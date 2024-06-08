@@ -35,7 +35,6 @@ const SignUpPage = () => {
   const phoneInputRef = useRef(null); // Create a ref for the phone input
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const fontFamilyLight = useFontFamily("Light");
   const fontFamilyBold = useFontFamily("SemiBold");
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
@@ -96,15 +95,18 @@ const SignUpPage = () => {
     setIsRegistrationInProgress(true);
 
     try {
-      const response = dispatch(registerUser({ ...formik.values }));
+      const response = await dispatch(registerUser({ ...formik.values }));
 
       if (response && response.status) {
-        // Reset registerData after successful submission
+        message.success(t("Compte crée avec succes"));
         navigate("/beom/account/log-in");
       } else if (response && response.message) {
+        message.warning(response?.message);
       } else {
-        message.error(response.message);
+        message.warning(t("Echec"));
       }
+    } catch (e) {
+      message.error(t("Error", e));
     } finally {
       setIsRegistrationInProgress(false);
     }
@@ -239,7 +241,7 @@ const SignUpPage = () => {
               >
                 <Modal
                   title={null}
-                  visible={isModalOpen} // Changed from 'open' to 'visible'
+                  open={isModalOpen} // Changed from 'open' to 'visible'
                   onCancel={handleCancel}
                   centered
                   footer={

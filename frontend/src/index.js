@@ -48,12 +48,10 @@ const root = createRoot(rootElement);
 
 root.render(
   <I18nextProvider i18n={i18n}>
-    <React.StrictMode>
-      <Provider store={Store}>
-        <Router>
-          <App />
-        </Router>
-      </Provider>
-    </React.StrictMode>
+    <Provider store={Store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
   </I18nextProvider>
 );

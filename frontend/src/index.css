@@ -127,3 +127,13 @@ body {
 .video-container::after {
   right: 0;
 }
+
+/* mouse over link */
+a:hover {
+  color: #e1b74a;
+}
+
+/* selected link */
+a:active {
+  color: #e1b74a;
+}

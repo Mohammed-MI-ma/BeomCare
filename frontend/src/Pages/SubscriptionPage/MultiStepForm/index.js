@@ -1,19 +1,18 @@
-import React, { useState } from "react";
-import StepTwo from "../StepTwo";
-import StepOne from "../StepOne";
-import StepThree from "../StepThree";
-import { motion } from "framer-motion";
+import { message } from "antd";
+import React, { useState, lazy, Suspense, useTransition } from "react";
+
+const StepOne = lazy(() => import("../StepOne"));
+const StepTwo = lazy(() => import("../StepTwo"));
+const StepThree = lazy(() => import("../StepThree"));
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    address: "",
-    city: "",
     category: "",
-    lat: 0,
-    lng: 0,
+    lat: 34.02184645937183, // Initial latitude for Rabat, Hassan, Morocco
+    lng: -6.837458135560156, // Initial longitude for Rabat, Hassan, Morocco
     phone: "",
     lastname: "",
   });
@@ -28,50 +27,45 @@ const MultiStepForm = () => {
 
   const handleChange = (input) => (e) => {
     const value = e?.target ? e.target.value : e;
-    setFormData({ ...formData, [input]: value });
+    if (input == "map")
+      setFormData({ ...formData, lat: value.lat, lng: value.lng });
+    else setFormData({ ...formData, [input]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-  };
+  const [isPending, startTransition] = useTransition();
 
-  switch (step) {
-    case 1:
-      return (
-        <StepOne
-          nextStep={nextStep}
-          handleChange={handleChange}
-          values={formData}
-        />
-      );
-    case 2:
-      return (
-        <motion.div
-          initial={{ opacity: 0, translateY: 20 }}
-          animate={{ opacity: 1, translateY: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
-          <StepTwo
-            prevStep={prevStep}
-            nextStep={nextStep}
-            handleChange={handleChange}
-            values={formData}
-          />
-        </motion.div>
-      );
-    case 3:
-      return (
-        <StepThree
-          prevStep={prevStep}
-          handleChange={handleChange}
-          values={formData}
-          handleSubmit={handleSubmit}
-        />
-      );
-    default:
-      return <div>Error: Step not found</div>;
-  }
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      {isPending ? (
+        <div>Loading...</div>
+      ) : (
+        <>
+          {step === 1 && (
+            <StepOne
+              nextStep={() => startTransition(() => nextStep())}
+              handleChange={handleChange}
+              values={formData}
+            />
+          )}
+          {step === 2 && (
+            <StepTwo
+              prevStep={prevStep}
+              nextStep={() => startTransition(() => nextStep())}
+              handleChange={handleChange}
+              values={formData}
+            />
+          )}
+          {step === 3 && (
+            <StepThree
+              prevStep={prevStep}
+              handleChange={handleChange}
+              values={formData}
+            />
+          )}
+        </>
+      )}
+    </Suspense>
+  );
 };
 
 export default MultiStepForm;
