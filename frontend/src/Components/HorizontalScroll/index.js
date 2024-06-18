@@ -64,6 +64,25 @@ const HorizontalScroll = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
+      {" "}
+      <div style={{ width: "80%", display: "flex", justifyContent: "center" }}>
+        <motion.button
+          className={styles.scrollButton}
+          onClick={() => scroll("left")}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          ❮
+        </motion.button>
+        <motion.button
+          className={styles.scrollButton}
+          onClick={() => scroll("right")}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          ❯
+        </motion.button>
+      </div>
       <div className={styles.scrollableContent} ref={scrollRef}>
         {data.map((partner) => (
           <motion.div
@@ -102,24 +121,6 @@ const HorizontalScroll = () => {
             </div>
           </motion.div>
         ))}
-      </div>
-      <div style={{ width: "80%", display: "flex", justifyContent: "center" }}>
-        <motion.button
-          className={styles.scrollButton}
-          onClick={() => scroll("left")}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          ❮
-        </motion.button>
-        <motion.button
-          className={styles.scrollButton}
-          onClick={() => scroll("right")}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          ❯
-        </motion.button>
       </div>
     </motion.section>
   );

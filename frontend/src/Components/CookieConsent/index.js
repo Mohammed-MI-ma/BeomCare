@@ -1,91 +1,118 @@
-import { Button, Modal } from "antd";
-import React, { useState } from "react";
-import { useCookies } from "react-cookie";
-import useFontFamily from "../../Utilities/useFontFamily";
+import React, { useEffect } from "react";
 import { FaCookieBite } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import CookieConsent from "react-cookie-consent";
+import ReactGA from "react-ga";
+import { Link, useLocation } from "react-router-dom";
+import useFontFamily from "../../Utilities/useFontFamily";
+import { Divider } from "antd";
 
-const CookieConsent = () => {
-  const [cookies, setCookie] = useCookies(["cookieConsent"]);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const [isModalOpen, setIsModalOpen] = useState(true);
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+const CookieConsentComponent = () => {
   const fontFamilyLight = useFontFamily("Light");
+  const fontFamilyMedium = useFontFamily("Medium");
+
+  const location = useLocation();
+
+  useEffect(() => {
+    ReactGA.initialize("UA-XXXXX-Y"); // Replace 'UA-XXXXX-Y' with your actual tracking ID
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, [location]);
 
   return (
-    <Modal
-      title={
-        <h2 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <FaCookieBite />
-          <p>Consentement aux cookies</p>
-        </h2>
-      }
-      open={isModalOpen}
-      onOk={handleOk}
-      centered
-      onCancel={handleCancel}
-      footer={[
-        <Link to="/beom/aboutUs/privacy-policy">
-          <Button
-            key="link"
-            type="link"
-            style={{
-              fontFamily: fontFamilyLight,
-              fontSize: "13px",
-            }}
-            onClick={handleOk}
-          >
-            <u>Politique de confidentialité</u>
-          </Button>
-        </Link>,
-        <Button
-          key="submit"
-          type="primary"
-          style={{
-            background: "var(--color-primary)",
-            color: "white",
-            fontFamily: fontFamilyLight,
-            fontSize: "13px",
-          }}
-          onClick={handleOk}
-        >
-          Accepter
-        </Button>,
-        <Button
-          key="back"
-          style={{
-            background: "var(--color-accent)",
-            color: "black",
-            fontFamily: fontFamilyLight,
-            fontSize: "13px",
-          }}
-          onClick={handleCancel}
-        >
-          Refuser
-        </Button>,
-      ]}
+    <CookieConsent
+      location="bottom"
+      buttonText="Accepter"
+      declineButtonText="Refuser"
+      cookieName="myCookieConsent"
+      style={{
+        background: "white",
+        maxWidth: "400px",
+        boxShadow: "7px -6px 19px 4px rgba(0, 0, 0, 0.1)",
+        borderRadius: "10px",
+      }}
+      buttonStyle={{
+        background: "var(--color-primary)",
+        color: "white",
+        fontFamily: fontFamilyLight,
+        fontSize: "13px",
+        borderRadius: "10px",
+      }}
+      expires={150}
+      onAccept={() => {
+        // Activate GPS
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
+            console.log("User's current position:", position);
+          });
+        }
+
+        // Enable Google Analytics
+        ReactGA.initialize("G-14R378V7LP"); // Replace 'UA-XXXXX-Y' with your actual tracking ID
+        ReactGA.pageview(window.location.pathname + window.location.search);
+      }}
     >
+      <h2
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          color: "black",
+        }}
+      >
+        <FaCookieBite />
+        <p>Consentement aux cookies</p>
+      </h2>
       <p
         style={{
-          background: "var(--color-accent)",
           color: "black",
           fontFamily: fontFamilyLight,
           fontSize: "13px",
         }}
       >
         Ce site utilise des cookies pour vous garantir la meilleure expérience
-        sur notre site web.
+        sur BeomCare.
       </p>
-    </Modal>
+      <Divider />
+      <div className="flex gap-2 flex-col">
+        <div>
+          <h3
+            style={{
+              color: "black",
+              fontFamily: fontFamilyMedium,
+              fontSize: "13px",
+            }}
+          >
+            <i> Pourquoi avons-nous besoin de votre emplacement ?</i>{" "}
+          </h3>
+          <p
+            style={{
+              color: "black",
+              fontFamily: fontFamilyLight,
+              fontSize: "12px",
+            }}
+          >
+            Nous utilisons votre emplacement pour fournir des services
+            personnalisés, tels que la recherche de salons à proximité,
+            l'affichage de contenu pertinent et l'amélioration de votre
+            expérience globale.
+          </p>
+        </div>
+        <p
+          style={{
+            color: "black",
+            fontFamily: fontFamilyLight,
+            fontSize: "12px",
+          }}
+        >
+          Vos données de localisation ne sont utilisées que dans notre
+          application et ne sont pas partagées avec des tiers sans votre
+          consentement.
+          <Link to="Plus d'info">
+            . <u>Pour plus d'info, contactez le support</u>
+          </Link>
+        </p>
+      </div>
+    </CookieConsent>
   );
 };
 
-export default CookieConsent;
+export default CookieConsentComponent;

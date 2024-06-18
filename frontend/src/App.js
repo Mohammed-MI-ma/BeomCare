@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import axios from "axios"; // Import Axios
 import { setCategories } from "./Reducers/applicationService/applicationSlice";
 import { useDispatch, useSelector } from "react-redux";
+import CookieConsentComponent from "./Components/CookieConsent";
 
 function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -197,7 +198,7 @@ function App() {
           </Routes>
         </AnimatePresence>
 
-        <FloatButton.BackTop visibilityHeight={0} />
+        <FloatButton.BackTop style={{}} />
         <FloatButton
           icon={<QuestionCircleOutlined />}
           style={{
@@ -205,6 +206,7 @@ function App() {
           }}
         />
         <Footer />
+        <CookieConsentComponent />
       </div>
     </ConfigProvider>
   );

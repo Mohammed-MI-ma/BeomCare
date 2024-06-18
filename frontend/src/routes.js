@@ -1,6 +1,7 @@
 // routes.js
 import React, { lazy } from "react";
 import CustomSuspense from "./Components/CustomSuspense";
+import CategoryPage from "./Pages/CategoryPage";
 
 //__lazy_loaded_components
 
@@ -54,6 +55,14 @@ export const routes = [
     element: (
       <CustomSuspense id="signUp-page">
         <SubscriptionPage />
+      </CustomSuspense>
+    ),
+  },
+  {
+    path: "/beom/category/:categoryId",
+    element: (
+      <CustomSuspense id="category page">
+        <CategoryPage />
       </CustomSuspense>
     ),
   },

@@ -53,7 +53,7 @@ const NavbarActionsButtons = () => {
   const userInfo = useSelector((state) => state.auth.userInfo);
   //Static code
   const AddInstituteButton = {
-    label: "Ajouter votre établissement",
+    label: "Devenez partenaire",
     path: `/beom/institute/addCenter`,
     icon: <IoStorefrontOutline size={"20px"} />,
   };
@@ -69,12 +69,8 @@ const NavbarActionsButtons = () => {
     path: `/beom/account/sign-up`,
     icon: <FaRegNewspaper size={"20px"} />,
   };
-  const menuItems = [
-    { label: "coiffure homme", path: "/beom/BarberMen" },
-    { label: "coiffure femme", path: "/beom/BarberWomen" },
-    { label: "Hamam", path: "/beom/Hamam" },
-    { label: "Institut de beauté", path: "/beom/BeautyInstitute" },
-  ];
+
+  const { data } = useSelector((state) => state.application.categories);
 
   const fontFamilyMedium = useFontFamily("Medium");
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
@@ -110,10 +106,13 @@ const NavbarActionsButtons = () => {
             }}
             className={style.nav}
           >
-            {menuItems.map((item, index) => (
+            {data.slice(0, 5).map((item, index) => (
               <li key={index} style={{ fontSize: "var(--font-small-size)" }}>
-                <Link to={item.path} style={{ fontFamily: fontFamilyMedium }}>
-                  {item.label}
+                <Link
+                  to={`/beom/category/${item._id}`}
+                  style={{ fontFamily: fontFamilyMedium }}
+                >
+                  {item.title}
                 </Link>
               </li>
             ))}
@@ -267,6 +266,6 @@ const NavbarActionsButtons = () => {
 
 export default NavbarActionsButtons;
 export const AddInstituteButton = {
-  label: "Ajouter votre établissement",
+  label: "Devenez partenaire",
   path: `/beom/institute/addCenter`,
 };

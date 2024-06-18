@@ -4,7 +4,7 @@ import useFontFamily from "../../Utilities/useFontFamily";
 import { CustomDivider } from "../LoginPage";
 import MultiStepForm from "./MultiStepForm";
 import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar, Breadcrumb, Divider, Tooltip } from "antd";
+import { Avatar, Breadcrumb, Divider, Input, Tooltip } from "antd";
 import style from "./SubscriptionPage.module.css";
 const SubscriptionPage = () => {
   const fontFamilyBold = useFontFamily("SemiBold");
@@ -123,10 +123,15 @@ const SubscriptionPage = () => {
             alignItems: "center",
           }}
         >
-          <div style={{ display: "flex" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <CustomDivider />
           </div>
-
           <p>{t("beomSlogan")}</p>
         </div>
       </main>

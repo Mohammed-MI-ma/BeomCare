@@ -266,6 +266,7 @@ const StepThree = ({ prevStep, handleChange, values }) => {
                 </p>
               )}
             <Divider />
+
             <p style={{ fontFamily: fontFamilyLight }}>{t("Nom Business *")}</p>
             <Input
               name="businessName"

@@ -116,7 +116,7 @@ const StepTwo = ({ prevStep, nextStep, handleChange, values }) => {
     </Form.Item>
   );
   return (
-    <section>
+    <section style={{ overflowY: "auto" }}>
       <p className="w-full text-center">2/3 {values?.category?.label}</p>
       <Form validateMessages={validateMessages} onFinish={onFinish}>
         <div
@@ -170,18 +170,12 @@ const StepTwo = ({ prevStep, nextStep, handleChange, values }) => {
                 <p
                   style={{
                     fontFamily: fontFamilyLight,
-                    fontSize: "var(--font-small-size)",
+                    fontSize: "var(--font-tiny-size)",
+                    maxWidth: "300px",
+                    textAlign: "center",
                   }}
                 >
-                  {t("Les numéros de téléphone doivent être corrects")}
-                </p>
-                <p
-                  style={{
-                    fontFamily: fontFamilyLight,
-                    fontSize: "var(--font-small-size)",
-                  }}
-                >
-                  {t(",accessibles et uniques pour les entreprises*")}
+                  {t("Les GSMs doivent être corrects, accessibles et uniques*")}
                 </p>
               </>
             )}
@@ -226,7 +220,7 @@ const StepTwo = ({ prevStep, nextStep, handleChange, values }) => {
             }}
           >
             {t(
-              "Après validation par notre membre du support, nous vous invitons à  compléter les informations de votre institut/centre de beauté et à commencer à publier tous vos services sur Beom Care."
+              "Après validation par le support, nous vous invitons à compléter les informations de votre institut de beauté et à commencer à publier tous vos services"
             )}
           </small>
         </div>

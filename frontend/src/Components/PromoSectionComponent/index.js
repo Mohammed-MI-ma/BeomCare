@@ -40,13 +40,15 @@ const PromoSectionComponent = () => {
         <CenteredFlexComponent
           style={{ flexDirection: "column", alignItems: "start" }}
         >
-          <p>Que cherchez-vous ?</p>
+          <p style={{ color: "#5A5A5A", fontSize: "12px" }}>
+            Que cherchez-vous ?
+          </p>
           <p> Nom du salon, prestations</p>
         </CenteredFlexComponent>
         <CenteredFlexComponent
           style={{ flexDirection: "column", alignItems: "start" }}
         >
-          <p>Où</p>
+          <p style={{ color: "#5A5A5A", fontSize: "12px" }}>Où</p>
           <p>Adresse, ville...</p>
         </CenteredFlexComponent>
         <Button
