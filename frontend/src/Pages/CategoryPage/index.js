@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import useFontFamily from "../../Utilities/useFontFamily";
 import { CustomDivider } from "../LoginPage";
 import ResponsiveGrid from "./ResponsiveGrid";
+import FullScreenVideo from "../../Components/FullScreenVideo";
+import man from "../../Assets/images/man.webp";
 
 const CategoryPage = () => {
   const { categoryId } = useParams();
@@ -51,11 +53,17 @@ const CategoryPage = () => {
             width: "99vw",
             margin: 0,
             color: "white",
-            height: "200px",
+            height: "150px",
             position: "relative",
           }}
-        />
-        <p>{category.description}</p>
+        >
+          {console.log("qsdqsd", category.data)}
+          <FullScreenVideo
+            image={
+              "https://firebasestorage.googleapis.com/v0/b/beomecare-bacoffice.appspot.com/o/femmm.jpg?alt=media&token=55903301-ad26-4779-a575-391f31c05f7a"
+            }
+          />
+        </section>
       </>
     );
   };
@@ -80,7 +88,7 @@ const CategoryPage = () => {
         <section id="main-content" className="flex items-center flex-col">
           {renderContent()}
         </section>
-        {category.data?.description}
+        <h1 style={{ textAlign: "center" }}>{category.data?.description}</h1>
         <CustomDivider />
         <h1 style={{ fontFamily: fontFamilyBold, fontSize: "20px" }}>
           Réserver en ligne un RDV avec {category.data?.name}

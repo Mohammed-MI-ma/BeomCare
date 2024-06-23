@@ -9,6 +9,8 @@ import {
   Modal,
   message,
 } from "antd";
+import Axios from "axios";
+
 import useFontFamily from "../../../Utilities/useFontFamily";
 import { useTranslation } from "react-i18next";
 import MapComponent from "../../../Components/MapComponent";
@@ -18,10 +20,13 @@ import { useFormik } from "formik";
 import { partnerSchema } from "../../../Utilities/validationSchema";
 import { RECAPTCHA } from "../../../config.dev";
 import PolitiqueSecurite from "../../../Components/Utilities/PolitiqueSecurite";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { registerCenter } from "../../../Reducers/authService/actions/authAction";
 
 const StepThree = ({ prevStep, handleChange, values }) => {
+  const access_Token = useSelector((state) => state.auth.accessToken);
+
   const { t } = useTranslation();
   const fontFamilyLight = useFontFamily("Light");
   const fontFamilyBold = useFontFamily("SemiBold");
@@ -29,7 +34,8 @@ const StepThree = ({ prevStep, handleChange, values }) => {
   const showModal = () => setIsModalOpen(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [isRegistrationInProgress, setIsRegistrationInProgress] =
+    useState(false);
   const formik = useFormik({
     initialValues: {
       businessName: "",
@@ -55,14 +61,28 @@ const StepThree = ({ prevStep, handleChange, values }) => {
       return;
     }
 
-    // setIsRegistrationInProgress(true);
+    setIsRegistrationInProgress(true);
 
     try {
       console.log("formik", { ...formik.values });
-      const response = await dispatch();
-
+      const response = await dispatch(registerCenter({ ...formik.values }));
+      console.log("response", response);
       if (response && response.status) {
         message.success(t("Compte crée avec succes"));
+        try {
+          await Axios.post(
+            `${process.env.REACT_APP_BASE_API_URI_DEV}api/auth/send-qrcode-email`,
+            {
+              email: formik.values?.email,
+              trackingNumber: response?.centerData?.trackingNumber,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${access_Token}`,
+              },
+            }
+          );
+        } catch (e) {}
         navigate("/beom/aboutUs/FAQs");
       } else if (response && response.message) {
         message.warning(response?.message);
@@ -72,7 +92,7 @@ const StepThree = ({ prevStep, handleChange, values }) => {
     } catch (e) {
       message.error(t("Error", e));
     } finally {
-      // setIsRegistrationInProgress(false);
+      setIsRegistrationInProgress(false);
     }
   };
   const handleButtonClick = () => {
@@ -181,7 +201,7 @@ const StepThree = ({ prevStep, handleChange, values }) => {
                   type="submit"
                   disabled={!formik.isValid}
                   className="w-full"
-                  loading={false}
+                  loading={isRegistrationInProgress}
                   size="large"
                   style={{
                     background: formik.isValid

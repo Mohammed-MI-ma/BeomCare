@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useFontFamily from "../../../Utilities/useFontFamily";
 import { useTranslation } from "react-i18next";
 import CenteredFlexComponent from "../../../Components/Utilities/CenteredFlexComponent";
@@ -7,17 +7,28 @@ import { useSelector } from "react-redux";
 import { Divider, Input, Tooltip } from "antd";
 import { FaBarcode } from "react-icons/fa";
 import { InfoCircleOutlined } from "@ant-design/icons";
-
+import { useLocation } from "react-router-dom";
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 const StepOne = ({ nextStep, handleChange }) => {
   const fontFamilySemiBold = useFontFamily("SemiBold");
   const { t } = useTranslation();
   const { data } = useSelector((state) => state.application.categories);
   const fontFamilyLight = useFontFamily("Light");
+  const query = useQuery();
+  const [trackingNumber, setTrackingNumber] = useState("");
 
   const handleCardClick = (cardId, label) => {
     handleChange("category")({ cardId: cardId, label: label }); // Update the selected category in the parent state
     nextStep(); // Move to the next step
   };
+  useEffect(() => {
+    const trackingNumberFromUrl = query.get("trackingNumber");
+    if (trackingNumberFromUrl) {
+      setTrackingNumber(trackingNumberFromUrl);
+    }
+  }, [query]);
   return (
     <>
       <div
@@ -76,6 +87,8 @@ const StepOne = ({ nextStep, handleChange }) => {
           style={{
             fontFamily: fontFamilyLight,
           }}
+          value={trackingNumber}
+          readOnly
           maxLength={24}
           placeholder="202415105536632199283780"
           suffix={

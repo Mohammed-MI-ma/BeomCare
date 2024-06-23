@@ -6,8 +6,17 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import { IoStorefrontOutline } from "react-icons/io5";
 import { IoMdNotifications, IoIosLogIn } from "react-icons/io";
 import { FaRegNewspaper } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 
-import { Avatar, Badge, Button, ConfigProvider, Popover, Space } from "antd";
+import {
+  Avatar,
+  Badge,
+  Button,
+  ConfigProvider,
+  Divider,
+  Popover,
+  Space,
+} from "antd";
 import { Link } from "react-router-dom";
 import useFontFamily from "../../../Utilities/useFontFamily";
 import style from "./NavbarActionsButtons.module.css";
@@ -69,7 +78,19 @@ const NavbarActionsButtons = () => {
     path: `/beom/account/sign-up`,
     icon: <FaRegNewspaper size={"20px"} />,
   };
-
+  const onClick = ({ key }) => {
+    switch (key) {
+      case "1":
+        // changeLanguage("fr");
+        break;
+      case "2":
+        //    changeLanguage("ar");
+        break;
+      default:
+        // changeLanguage("fr");
+        break;
+    }
+  };
   const { data } = useSelector((state) => state.application.categories);
 
   const fontFamilyMedium = useFontFamily("Medium");
@@ -84,6 +105,12 @@ const NavbarActionsButtons = () => {
       // Handle any errors if necessary
     }
   };
+  const items = [
+    {
+      key: "1",
+      label: <p style={{ fontFamily: fontFamilyMedium }}>{t("french")}</p>,
+    },
+  ];
   return (
     <Space>
       {true && (
@@ -137,10 +164,7 @@ const NavbarActionsButtons = () => {
                 ? t(LoginButton.label)
                 : t(SignUpButton.label)}
             </ActionButton>
-            <div id="largeScreen-actions-description" className="sr-only">
-              This is a container for large screen actions, displaying
-              login/signup or login/addInstitute options dynamically.
-            </div>
+            &nbsp;
             <ActionButton
               style={{
                 color: "var(--color-primary)",
@@ -155,6 +179,19 @@ const NavbarActionsButtons = () => {
               {location.pathname === "/beom/institute/addCenter"
                 ? LoginButton.label
                 : AddInstituteButton.label}
+            </ActionButton>
+            <Divider type="vertical" />
+            <ActionButton
+              style={{
+                border: "1px solid var(--color-primary)",
+                borderRadius: "50px",
+                color: "black",
+              }}
+            >
+              <div className="flex gap-2 justify-center items-center">
+                <FaLocationDot />
+                {t("Rabat")}
+              </div>
             </ActionButton>
           </div>
           <div id="smallScreen-actions">

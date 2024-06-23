@@ -1,9 +1,8 @@
 // src/components/FullScreenVideo.js
 import React, { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import man from "../../Assets/images/man.webp";
 import style from "./styles.module.css";
-const FullScreenVideo = () => {
+const FullScreenVideo = ({ image }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -31,7 +30,7 @@ const FullScreenVideo = () => {
     <div
       className={style.backGroundImage}
       style={{
-        background: `url('${man}')`,
+        background: `url('${image}')`,
       }}
     />
   );

@@ -133,7 +133,55 @@ export const registerUser = (postData) => async (dispatch) => {
     }
   });
 };
+export const registerCenter = (postData) => async (dispatch) => {
+  return new Promise(async (resolve, reject) => {
+    let response = {
+      status: false,
+      message: "",
+      isLoading: true,
+      // access_token: null,
+      centerData: null,
+      errors: [],
+    };
+    dispatch({ type: Types.AUTH_REGISTER_CENTER_SUBMIT, payload: response });
+    console.log("postData", postData);
+    try {
+      const res = await Axios.post(
+        `${process.env.REACT_APP_BASE_API_URI_DEV}api/auth/subscribe-center`,
+        postData
+      );
+      const { message, success, center } = res.data;
+      response.message = message;
+      response.status = success;
+      response.centerData = center;
 
+      if (success) {
+        resolve(response); // Resolve the promise with the response
+      } else {
+        resolve(response); // Reject the promise with the response
+      }
+    } catch (err) {
+      const errorsResponse = JSON.parse(err.request.response);
+      if (
+        errorsResponse.errors &&
+        Object.entries(errorsResponse.errors).length > 0
+      ) {
+        const message = errorsResponse.message;
+        response.message = message;
+        response.errors = errorsResponse.errors;
+
+        resolve(response); // Reject the promise with the response
+      } else {
+        const message = JSON.parse(err.request.response).message;
+        response.message = message;
+        resolve(response); // Reject the promise with the response
+      }
+    } finally {
+      response.isLoading = false;
+      dispatch({ type: Types.AUTH_REGISTER_CENTER_SUBMIT, payload: response });
+    }
+  });
+};
 export const logoutAction = () => async (dispatch) => {
   let response = {
     status: false,

@@ -1,40 +1,37 @@
-.navbarInnerStyle {
-  padding: 10px;
+.searchEngine {
+  color: var(--color-primary);
+  transform: translateY(100%);
 }
-.navbarBottomStyle {
-  display: none !important;
-}
-/* Styles for small devices (phones) */
+
 @media (max-width: 36rem) {
-  .navbarBottomStyle {
-    display: flex !important;
+  .searchEngine {
+    transform: translateY(70%);
+    width: 90%;
   }
 }
 
 /* Styles for small devices (tablets) */
 @media (min-width: 36.063rem) and (max-width: 48rem) {
-  .navbarBottomStyle {
-    display: flex !important;
+  .searchEngine {
+    transform: translateY(70%);
+    width: 90%;
   }
 }
 
 /* Styles for medium devices (laptops and desktops) */
 @media (min-width: 48.063rem) and (max-width: 62rem) {
-  .navbarBottomStyle {
-    display: flex !important;
+  .searchEngine {
   }
 }
 
 /* Styles for large devices (desktops) */
 @media (min-width: 62.063rem) and (max-width: 75rem) {
-  .navbarBottomStyle {
-    display: none !important;
+  .searchEngine {
   }
 }
 
 /* Styles for extra large devices (large desktops and TVs) */
 @media (min-width: 75.063rem) {
-  .navbarBottomStyle {
-    display: none !important;
+  .searchEngine {
   }
 }
