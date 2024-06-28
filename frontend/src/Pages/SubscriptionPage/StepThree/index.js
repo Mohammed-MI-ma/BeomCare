@@ -36,16 +36,19 @@ const StepThree = ({ prevStep, handleChange, values }) => {
   const navigate = useNavigate();
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
+  const [latt, setLat] = useState(values.lat);
+  const [lngg, setLng] = useState(values.lng);
+
   const formik = useFormik({
     initialValues: {
       businessName: "",
-      email: values.email || "", // Fill with values from the 'values' object      password: "",
+      email: values.email || "", // Fill with values from the 'values' object
       phone: values.phone || "",
-      category: values.category?.label || "", // Fill with values from the 'values' object      password: "",
+      category: values.category?.label || "", // Fill with values from the 'values' object
       lastname: values.lastname || "",
       name: values.name || "",
-      lat: values.lat || 0,
-      lng: values.lng || 0,
+      lat: latt,
+      lng: lngg,
       termsOfServiceAccepted: true,
       privacyPolicyAccepted: true,
       recaptchaToken: "",
@@ -64,8 +67,9 @@ const StepThree = ({ prevStep, handleChange, values }) => {
     setIsRegistrationInProgress(true);
 
     try {
-      console.log("formik", { ...formik.values });
-      const response = await dispatch(registerCenter({ ...formik.values }));
+      const response = await dispatch(
+        registerCenter({ ...formik.values, lat: latt, lng: lngg })
+      );
       console.log("response", response);
       if (response && response.status) {
         message.success(t("Compte crée avec succes"));
@@ -101,15 +105,19 @@ const StepThree = ({ prevStep, handleChange, values }) => {
       // Update any state or perform actions based on the validation results
     });
   };
-  useEffect(() => {
-    console.log(formik.values);
-  }, [formik]);
 
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const handleMapLocationChange = ({ lat, lng }) =>
+  const handleMapLocationChange = ({ lat, lng }) => {
+    setLng(lng);
+    setLat(lat);
     handleChange("map")({ lat, lng });
+  };
+  useEffect(() => {
+    console.log("values one more time", values);
+    console.log("formik one more time", formik.values);
+  }, [values]);
 
   return (
     <section style={{ width: "100%" }}>

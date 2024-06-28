@@ -1,5 +1,11 @@
 import { message } from "antd";
-import React, { useState, lazy, Suspense, useTransition } from "react";
+import React, {
+  useState,
+  lazy,
+  Suspense,
+  useTransition,
+  useEffect,
+} from "react";
 
 const StepOne = lazy(() => import("../StepOne"));
 const StepTwo = lazy(() => import("../StepTwo"));
@@ -27,11 +33,19 @@ const MultiStepForm = () => {
 
   const handleChange = (input) => (e) => {
     const value = e?.target ? e.target.value : e;
-    if (input == "map")
+    console.log(input, value);
+    if (input == "map") {
       setFormData({ ...formData, lat: value.lat, lng: value.lng });
-    else setFormData({ ...formData, [input]: value });
+      console.log("porn", formData);
+    } else {
+      setFormData({ ...formData, [input]: value });
+      console.log("porn2");
+    }
   };
-
+  // Log the updated formData when it changes
+  useEffect(() => {
+    console.log("formData updated", formData);
+  }, [formData]);
   const [isPending, startTransition] = useTransition();
 
   return (

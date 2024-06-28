@@ -17,8 +17,8 @@ const MapComponent = ({ selectedLocation, setSelectedLocation }) => {
         console.log("Latitude:", lat);
         console.log("Longitude:", lng);
 
-        setSelectedLocation({ lat, lng });
-        setLocalLocation({ lat, lng });
+        setSelectedLocation({ lat: lat, lng: lng });
+        setLocalLocation({ lat: lat, lng: lng });
       },
     });
     return null;

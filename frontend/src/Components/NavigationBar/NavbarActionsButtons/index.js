@@ -183,7 +183,6 @@ const NavbarActionsButtons = () => {
             <Divider type="vertical" />
             <ActionButton
               style={{
-                border: "1px solid var(--color-primary)",
                 borderRadius: "50px",
                 color: "black",
               }}

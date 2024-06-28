@@ -4,10 +4,11 @@ import { useTranslation } from "react-i18next";
 import CenteredFlexComponent from "../../../Components/Utilities/CenteredFlexComponent";
 import CardSubscription from "../CardSubscription";
 import { useSelector } from "react-redux";
-import { Divider, Input, Tooltip } from "antd";
+import { ConfigProvider, Divider, Input, Modal, Steps, Tooltip } from "antd";
 import { FaBarcode } from "react-icons/fa";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import style from "./stepOne.module.css";
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
@@ -18,7 +19,13 @@ const StepOne = ({ nextStep, handleChange }) => {
   const fontFamilyLight = useFontFamily("Light");
   const query = useQuery();
   const [trackingNumber, setTrackingNumber] = useState("");
-
+  const [isModalOpen, setIsModalOpen] = useState(trackingNumber !== "");
+  const navigate = useNavigate();
+  const handleCancel = () => {
+    setTrackingNumber("");
+    setIsModalOpen(false);
+    navigate("/beom/institute/addCenter");
+  };
   const handleCardClick = (cardId, label) => {
     handleChange("category")({ cardId: cardId, label: label }); // Update the selected category in the parent state
     nextStep(); // Move to the next step
@@ -27,12 +34,13 @@ const StepOne = ({ nextStep, handleChange }) => {
     const trackingNumberFromUrl = query.get("trackingNumber");
     if (trackingNumberFromUrl) {
       setTrackingNumber(trackingNumberFromUrl);
+      setIsModalOpen(trackingNumber !== "");
     }
   }, [query]);
   return (
     <>
       <div
-        className="w-[80%] flex flex-col gap-5 mb-2 pb-2 p-2 bg-white rounded"
+        className={` sm:w-full md:w-[80%] flex flex-col gap-5 mb-2 pb-2 p-2 bg-white rounded ${style.trackingContainer}`}
         style={{
           boxShadow: "0px 6px 4px 0px rgb(0 0 0 / 5%)",
         }}
@@ -142,8 +150,61 @@ const StepOne = ({ nextStep, handleChange }) => {
           </div>
         </CenteredFlexComponent>
       </div>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorBorder: "var(--color-primary)",
+            colorPrimary: "var(--color-primary)",
+          },
+        }}
+      >
+        <Modal
+          title={"Demande # " + trackingNumber}
+          open={isModalOpen} // Changed from 'open' to 'visible'
+          onCancel={handleCancel}
+          centered
+          footer={null} // Removed footer buttons
+        >
+          {/**********************/}
+          {/**********************/}
+          {/**********************/}
+          {/**********************/}
+          {/**********************/}
+          {/**********************/}
+          {/**********************/}
+          <h1
+            style={{
+              fontFamily: fontFamilyLight,
+              textAlign: "center",
+              marginBottom: "11px",
+            }}
+          >
+            {t(
+              "Nous vous remercions pour votre intérêt à rejoindre notre réseau de centres de beauté partenaires. Votre demande a bien été reçue et est actuellement en cours de traitement."
+            )}
+          </h1>
+          <Steps
+            progressDot
+            current={1}
+            items={[
+              pairFunction("Fini", "Demande reçu au backend Beom"),
+              pairFunction("En cours", "Vérification des informations"),
+              pairFunction("En attente", "Validation finale"),
+            ]}
+          />
+          <Divider />
+          <p style={{ fontFamily: fontFamilyLight }}>
+            {t("Visitez la page FAQ pour plus d'information *")}
+          </p>
+        </Modal>
+      </ConfigProvider>
     </>
   );
 };
-
+const pairFunction = (title, description, font) => {
+  return {
+    title: <h1 style={{ fontFamily: font }}>{title}</h1>,
+    description: <p style={{ fontFamily: font }}>{description}</p>,
+  };
+};
 export default StepOne;

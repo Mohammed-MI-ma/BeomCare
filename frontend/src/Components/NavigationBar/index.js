@@ -49,8 +49,8 @@ const NavigationBar = () => {
             <CenteredFlexComponent className={`gap-3`}>
               <ActionButton
                 style={{
-                  border: "1px solid var(--color-primary)",
                   borderRadius: "50px",
+                  color: "black",
                 }}
               >
                 <div className="flex gap-2 justify-center items-center">
